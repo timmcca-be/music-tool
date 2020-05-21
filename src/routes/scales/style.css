@@ -1,0 +1,22 @@
+.toggle {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.3rem;
+	width: 10rem;
+	padding: 0.6rem;
+}
+
+.toggleOn {
+	border-color: #0678c4;
+	background-color: #f2f8fc;
+	font-weight: bold;
+	color: #0678c4; 
+}
+
+.toggleOn:hover {
+	background-color: #f9fcfd;
+}
+
+.toggleOff {
+	border-color: #ccc;
+}

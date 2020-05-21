@@ -1,0 +1,68 @@
+.circle {
+	position: relative;
+}
+
+.link {
+	font-family: 'Times New Roman', Times, serif;
+	position: absolute;
+	width: 4rem;
+	text-align: center;
+	font-size: 2rem;
+	color: #447;
+}
+
+.link:nth-child(1), .link:nth-child(7) {
+	left: calc(50% - 2rem);
+}
+
+.link:nth-child(2), .link:nth-child(6) {
+	left: calc(50% + 2rem);
+}
+
+.link:nth-child(3), .link:nth-child(5) {
+	left: calc(50% + 4.93rem);
+}
+
+.link:nth-child(4) {
+	left: calc(50% + 6rem);
+}
+
+.link:nth-child(8), .link:nth-child(12) {
+	left: calc(50% - 6rem);
+}
+
+.link:nth-child(9), .link:nth-child(11) {
+	left: calc(50% - 8.93rem);
+}
+
+.link:nth-child(10) {
+	left: calc(50% - 10rem);
+}
+
+.link:nth-child(1) {
+	top: 0;
+}
+
+.link:nth-child(2), .link:nth-child(12) {
+	top: 1.07rem;
+}
+
+.link:nth-child(3), .link:nth-child(11) {
+	top: 4rem;
+}
+
+.link:nth-child(4), .link:nth-child(10) {
+	top: 8rem;
+}
+
+.link:nth-child(5), .link:nth-child(9) {
+	top: 12rem;
+}
+
+.link:nth-child(6), .link:nth-child(8) {
+	top: 14.93rem;
+}
+
+.link:nth-child(7) {
+	top: 16rem;
+}
