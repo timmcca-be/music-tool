@@ -1,9 +1,5 @@
 .toggle {
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 0.3rem;
 	width: 10rem;
-	padding: 0.6rem;
 }
 
 .toggleOn {
@@ -15,8 +11,4 @@
 
 .toggleOn:hover {
 	background-color: #f9fcfd;
-}
-
-.toggleOff {
-	border-color: #ccc;
 }

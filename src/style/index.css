@@ -19,6 +19,19 @@ html, body {
 	height: 100%;
 }
 
+button {
+	border-color: #999;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.3rem;
+	padding: 0.6rem;
+	background-color: #f6f6f6;
+}
+
+button:hover {
+	background-color: #fbfbfb;
+}
+
 button::-moz-focus-inner {
 	border: 0;
 }

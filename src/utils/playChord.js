@@ -1,26 +1,21 @@
-let audioCtx, gainNode;
-if(typeof window !== 'undefined') {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    gainNode = audioCtx.createGain();
-    gainNode.connect(audioCtx.destination);
-}
-
 const intervals = [];
 for(let i = 0; i < 12; i++) {
     intervals.push(Math.pow(2, i / 12));
 }
 
-function createOscillator(hz) {
-    const oscillator = audioCtx.createOscillator();
-    oscillator.type = 'square';
-    oscillator.frequency.value = hz;
-    oscillator.connect(gainNode);
-    return oscillator;
+let synthsPromise;
+if(typeof window !== 'undefined') {
+    synthsPromise = import(/* webpackPrefetch: true */ 'tone').then(Tone => {
+        const volume = new Tone.Volume(-7).toMaster();
+        const synths = [];
+        for(let i = 0; i < 4; i++) {
+            synths[i] = new Tone.Synth().connect(volume);
+        }
+        return synths;
+    });
 }
 
-let oscillators = [];
-
-export default function playChord(semitone, chordType) {
+export default async function playChord(semitone, chordType) {
     let remainingModifiers = chordType;
     const chordTones = [1, intervals[4], intervals[7]];
     while(remainingModifiers !== '') {
@@ -42,12 +37,8 @@ export default function playChord(semitone, chordType) {
             break;
         }
     }
-	const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12 - (semitone <= 6 ? 0 : 1));
-	oscillators.forEach(oscillator => oscillator.stop());
-    oscillators = chordTones.map(ratio => createOscillator(ratio * baseFrequency));
-    gainNode.gain.value = 1 / oscillators.length;
-    oscillators.forEach(oscillator => {
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 1);
-    });
+    const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12 - (semitone <= 6 ? 0 : 1));
+    const synths = await synthsPromise;
+    synths.forEach(synth => synth.triggerRelease());
+    chordTones.forEach((ratio, i) => synths[i].triggerAttackRelease(ratio * baseFrequency, 1));
 }

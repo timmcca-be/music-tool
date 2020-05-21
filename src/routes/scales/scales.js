@@ -24,7 +24,7 @@ function Scales({matches: { keyCenter }}) {
 		<main>
 			<h1>Key of {formattedKey}</h1>
 			<button onClick={() => setAddSevenths(!addSevenths)}
-				class={[style.toggle, addSevenths ? style.toggleOff : style.toggleOn].join(' ')}>
+				class={addSevenths ? style.toggle : `${style.toggle} ${style.toggleOn}`}>
 				{addSevenths ? 'Remove' : 'Add'} sevenths
 			</button>
 			{ scales }
