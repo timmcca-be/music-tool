@@ -3,7 +3,7 @@
   "name": "music-tool",
   "version": "0.0.1",
   "license": "MIT",
-  "homepage": "https://timmcca-be.github.io/music-tool",
+  "homepage": "https://music-tool.timmcca.be",
   "scripts": {
     "build": "preact build",
     "serve": "sirv build --cors --single",
