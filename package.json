@@ -10,7 +10,7 @@
     "dev": "preact watch",
     "lint": "eslint src",
     "test": "jest",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && echo \"music-tool.timmcca.be\" > build/CNAME",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
