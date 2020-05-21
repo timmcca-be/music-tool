@@ -42,7 +42,7 @@ export default function playChord(semitone, chordType) {
             break;
         }
     }
-	const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12);
+	const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12 - (semitone <= 6 ? 0 : 1));
 	oscillators.forEach(oscillator => oscillator.stop());
     oscillators = chordTones.map(ratio => createOscillator(ratio * baseFrequency));
     gainNode.gain.value = 1 / oscillators.length;
