@@ -20,16 +20,16 @@ html, body {
 }
 
 button {
-	border-color: #999;
+	border-color: #cfd6e6;
 	border-width: 1px;
 	border-style: solid;
 	border-radius: 0.3rem;
-	padding: 0.6rem;
-	background-color: #f6f6f6;
+	height: 3rem;
+	background-color: #fbfbfc;
 }
 
 button:hover {
-	background-color: #fbfbfb;
+	background-color: #fff;
 }
 
 button::-moz-focus-inner {

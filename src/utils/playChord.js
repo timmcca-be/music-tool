@@ -1,21 +1,23 @@
+let audioCtx;
+if(typeof window !== 'undefined') {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
 const intervals = [];
 for(let i = 0; i < 12; i++) {
     intervals.push(Math.pow(2, i / 12));
 }
 
-let synthsPromise;
-if(typeof window !== 'undefined') {
-    synthsPromise = import(/* webpackPrefetch: true */ 'tone').then(Tone => {
-        const volume = new Tone.Volume(-7).toMaster();
-        const synths = [];
-        for(let i = 0; i < 4; i++) {
-            synths[i] = new Tone.Synth().connect(volume);
-        }
-        return synths;
-    });
+let gainNode = null;
+function createOscillator(hz) {
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'triangle';
+    oscillator.frequency.value = hz;
+    oscillator.connect(gainNode);
+    return oscillator;
 }
 
-export default async function playChord(semitone, chordType) {
+export default function playChord(semitone, chordType) {
     let remainingModifiers = chordType;
     const chordTones = [1, intervals[4], intervals[7]];
     while(remainingModifiers !== '') {
@@ -37,8 +39,19 @@ export default async function playChord(semitone, chordType) {
             break;
         }
     }
+
+    if(gainNode !== null) {
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    }
+    gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+    gainNode.gain.value = 1 / chordTones.length;
+
     const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12 - (semitone <= 6 ? 0 : 1));
-    const synths = await synthsPromise;
-    synths.forEach(synth => synth.triggerRelease());
-    chordTones.forEach((ratio, i) => synths[i].triggerAttackRelease(ratio * baseFrequency, 1));
+    const oscillators = chordTones.map(ratio => createOscillator(ratio * baseFrequency));
+    oscillators.forEach((oscillator) => {
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 2);
+    });
+    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
 }
