@@ -8,28 +8,29 @@
 	border-width: 2px;
 	margin: 3px;
 	font-weight: bold;
+	font-size: 1rem;
 }
 
 .major {
 	border-color: #d8534e;
-	color: #d8534e;
+	color: #a72925;
 	background-color: #fefbfb;
 }
 
 .minor {
 	border-color: #5d9e18;
-	color: #5d9e18;
+	color: #497c13;
 	background-color: #fdfefb;
 }
 
 .dominant {
-	border-color: #3b7cb1;
-	color: #3b7cb1;
-	background-color: #fbfdfe;
+	border-color: #c94291;
+	color: #972b80;
+	background-color: #fefbfd;
 }
 
 .diminished {
-	border-color: #c942c7;
-	color: #c942c7;
-	background-color: #fefbfe;
+	border-color: #3b7cb1;
+	color: #2f638e;
+	background-color: #fbfdfe;
 }
