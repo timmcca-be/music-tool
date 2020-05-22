@@ -17,27 +17,15 @@ function createOscillator(hz) {
     return oscillator;
 }
 
-export default function playChord(semitone, chordType) {
-    let remainingModifiers = chordType;
-    const chordTones = [1, intervals[4], intervals[7]];
-    while(remainingModifiers !== '') {
-        if(remainingModifiers.startsWith('maj7')) {
-            chordTones[3] = intervals[11];
-            remainingModifiers = remainingModifiers.substring(4);
-        } else if(remainingModifiers.startsWith('7')) {
-            chordTones[3] = intervals[10];
-            remainingModifiers = remainingModifiers.substring(1);
-        } else if(remainingModifiers.startsWith('dim')) {
-			chordTones[1] = intervals[3];
-            chordTones[2] = intervals[6];
-            remainingModifiers = remainingModifiers.substring(3);
-        } else if(remainingModifiers.startsWith('m')) {
-            chordTones[1] = intervals[3];
-            remainingModifiers = remainingModifiers.substring(1);
-        } else {
-            console.error('Unknown modifiers:', remainingModifiers);
-            break;
-        }
+export default function playChord(semitone, chordType, addSeventh) {
+    const chordTones = [
+        1,
+        chordType === 'major' || chordType === 'dominant' ? intervals[4] : intervals[3],
+        chordType === 'diminished' ? intervals[6] : intervals[7]
+    ];
+
+    if(addSeventh) {
+        chordTones[3] = chordType === 'major' ? intervals[11] : intervals[10];
     }
 
     if(gainNode !== null) {
