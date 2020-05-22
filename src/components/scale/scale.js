@@ -93,7 +93,7 @@ function Scale({ keyCenter, mode, addSevenths }) {
         chords[scaleTone] = {
             name: chordName,
             type: getChordType(scaleTone, mode),
-            semitone,
+            semitone: startingSemitone <= 6 ? semitone : semitone - 12,
         };
     }
 

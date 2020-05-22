@@ -35,7 +35,7 @@ export default function playChord(semitone, chordType, addSeventh) {
     gainNode.connect(audioCtx.destination);
     gainNode.gain.value = 1 / chordTones.length;
 
-    const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12 - (semitone <= 6 ? 0 : 1));
+    const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12);
     const oscillators = chordTones.map(ratio => createOscillator(ratio * baseFrequency));
     oscillators.forEach((oscillator) => {
         oscillator.start();
