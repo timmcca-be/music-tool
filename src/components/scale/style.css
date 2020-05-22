@@ -1,14 +1,50 @@
+.scale {
+	padding: 1.6rem 0.2rem 0 0.2rem;
+}
+
 .modeTitle {
-	margin: 1.5rem 0 0.5rem 0;
+	margin: 0 0 0.5rem 0;
 }
 
 .chordButton {
-	width: 7rem;
+	width: calc(100% / 3 - 6px);
 	padding: 0.6rem;
 	border-width: 2px;
 	margin: 3px;
 	font-weight: bold;
 	font-size: 1rem;
+}
+
+@media only screen and (min-width: 360px) {
+	.chordButton {
+		width: calc(25% - 6px);
+	}
+}
+
+@media only screen and (min-width: 800px) {
+	.chordButton {
+		width: calc(100% / 7 - 6px);
+		max-width: 7rem;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	/* for spacing, so that the grid is centered */
+	.scale:after {
+		content: '';
+	}
+
+	.modeTitle, .scale:after {
+		display: inline-block;
+		width: calc(200% / 11 - 6px);
+		max-width: 14rem;
+		margin: 0 3px;
+	}
+
+	.chordButton {
+		width: calc(100% / 11 - 6px);
+		max-width: 7rem;
+	}
 }
 
 .major {

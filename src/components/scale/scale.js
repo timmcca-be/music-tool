@@ -98,7 +98,7 @@ function Scale({ keyCenter, mode, addSevenths }) {
     }
 
 	return (
-		<div>
+		<div class={style.scale}>
             <h3 class={style.modeTitle}>{modeNames[mode]}</h3>
             { chords.map((chord, i) => (
                 <button key={i} class={`${style.chordButton} ${style[chord.type]}`}
