@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import playChord from '../../utils/playChord'
+import { playChord } from '../../utils/playChord';
 import style from './style';
 
 const noteScaleTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];

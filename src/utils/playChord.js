@@ -17,7 +17,13 @@ function createOscillator(hz) {
     return oscillator;
 }
 
-export default function playChord(semitone, chordType, addSeventh) {
+function stopChord() {
+    if(gainNode !== null) {
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    }
+}
+
+function playChord(semitone, chordType, addSeventh) {
     const chordTones = [
         1,
         chordType === 'major' || chordType === 'dominant' ? intervals[4] : intervals[3],
@@ -28,9 +34,7 @@ export default function playChord(semitone, chordType, addSeventh) {
         chordTones[3] = chordType === 'major' ? intervals[11] : intervals[10];
     }
 
-    if(gainNode !== null) {
-        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    }
+    stopChord();
     gainNode = audioCtx.createGain();
     gainNode.connect(audioCtx.destination);
     gainNode.gain.value = 1 / chordTones.length;
@@ -43,3 +47,5 @@ export default function playChord(semitone, chordType, addSeventh) {
     });
     gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
 }
+
+export { playChord, stopChord };

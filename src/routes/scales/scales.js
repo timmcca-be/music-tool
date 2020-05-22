@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import style from './style';
 import Scale from '../../components/scale/scale';
+import { stopChord } from '../../utils/playChord';
 
 function formatNote(note) {
 	return note.replace(/bb/g, '𝄫').replace(/b/g, '♭').replace(/ss/g, '𝄪').replace(/s/g, '♯');
@@ -20,8 +21,14 @@ function Scales({matches: { keyCenter }}) {
 		scales[i] = <Scale key={i} keyCenter={keyCenter} mode={mode} addSevenths={addSevenths} />;
 	}
 
+	const onBackgroundClick = event => {
+		if(event.target.tagName !== 'BUTTON') {
+			stopChord();
+		}
+	};
+
 	return (
-		<main>
+		<main onClick={onBackgroundClick}>
 			<h1>Key of {formattedKey}</h1>
 			<button onClick={() => setAddSevenths(!addSevenths)}
 				class={addSevenths ? style.toggle : `${style.toggle} ${style.toggleOn}`}>
