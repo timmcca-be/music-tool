@@ -19,7 +19,7 @@ const chordMap = {
                 roman: 'ø7',
             },
             majorSeventh: {
-                literal: 'm(maj7)♭5',
+                literal: 'm(M7)♭5',
                 roman: 'oM7',
             },
         },
@@ -34,7 +34,7 @@ const chordMap = {
                 roman: '7',
             },
             majorSeventh: {
-                literal: 'm(maj7)',
+                literal: 'm(M7)',
                 roman: 'M7',
             },
         },
@@ -49,7 +49,7 @@ const chordMap = {
                 roman: '+7',
             },
             majorSeventh: {
-                literal: 'm(maj7)♯5',
+                literal: 'm(M7)♯5',
                 roman: '+M7',
             },
         },
@@ -66,7 +66,7 @@ const chordMap = {
                 roman: '7♭5',
             },
             majorSeventh: {
-                literal: 'maj7♭5',
+                literal: 'M7♭5',
                 roman: 'M7♭5',
             },
         },
@@ -96,7 +96,7 @@ const chordMap = {
                 roman: '+7',
             },
             majorSeventh: {
-                literal: 'maj7♯5',
+                literal: 'M7♯5',
                 roman: '+M7',
             },
         },
