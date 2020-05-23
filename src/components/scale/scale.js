@@ -98,35 +98,16 @@ function Scale({ keyCenter, name, semitoneOffsets, addSeventh, reset }) {
 
         const semitonesFromIonian = semitoneOffset % 12 - getIonianSemitone(scaleTone);
         let romanNumeral = `${getAccidentals(semitonesFromIonian)}${romanNumerals[scaleTone]}`;
-        let romanNumeralSuperscript;
-        switch(chordStyle) {
-            case 'half-diminished':
-                romanNumeral = romanNumeral.toLowerCase();
-                romanNumeralSuperscript = addSeventh ? 'ø7' : 'o';
-                break;
-            case 'diminished':
-                romanNumeral = romanNumeral.toLowerCase();
-                romanNumeralSuperscript = addSeventh ? 'o7' : 'o';
-                break;
-            case 'minor':
-                romanNumeral = romanNumeral.toLowerCase();
-                romanNumeralSuperscript = addSeventh ? '7' : '';
-                break;
-            case 'augmented':
-                romanNumeralSuperscript = addSeventh ? '+7' : '+';
-                break;
-            case 'major':
-                romanNumeralSuperscript = addSeventh ? 'M7' : '';
-                break;
-            case 'dominant':
-                romanNumeralSuperscript = addSeventh ? '7' : '';
-                break;
+        if(['half-diminished', 'diminished', 'minor'].indexOf(chordStyle) !== -1) {
+            romanNumeral = romanNumeral.toLowerCase();
         }
 
+        const chordType = getChordType(chordTones, chordSemitoneOffsets);
+
         chords[scaleTone] = {
-            name: chordName + getChordType(chordTones, chordSemitoneOffsets),
+            name: `${chordName}${chordType.literal}`,
             romanNumeral,
-            romanNumeralSuperscript,
+            romanNumeralSuperscript: chordType.roman,
             style: chordStyle,
             baseSemitone: chordBaseSemitone,
             semitoneOffsets: chordSemitoneOffsets,

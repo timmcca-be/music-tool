@@ -1,42 +1,104 @@
+const unknownChord = {
+    literal: '?',
+    roman: '?',
+};
+
 const chordMap = {
     minorThird: {
         diminshedFifth: {
-            noSeventh: 'dim',
-            diminishedSeventh: 'dim7',
-            minorSeventh: 'm7♭5',
-            majorSeventh: 'm(maj7)♭5',
+            noSeventh: {
+                literal: 'dim',
+                roman: 'o',
+            },
+            diminishedSeventh: {
+                literal: 'dim7',
+                roman: 'o7',
+            },
+            minorSeventh: {
+                literal: 'm7♭5',
+                roman: 'ø7',
+            },
+            majorSeventh: {
+                literal: 'm(maj7)♭5',
+                roman: 'oM7',
+            },
         },
         perfectFifth: {
-            noSeventh: 'm',
-            diminishedSeventh: '?',
-            minorSeventh: 'm7',
-            majorSeventh: 'm(maj7)',
+            noSeventh: {
+                literal: 'm',
+                roman: '',
+            },
+            diminishedSeventh: unknownChord,
+            minorSeventh: {
+                literal: 'm7',
+                roman: '7',
+            },
+            majorSeventh: {
+                literal: 'm(maj7)',
+                roman: 'M7',
+            },
         },
         augmentedFifth: {
-            noSeventh: 'ms5',
-            diminishedSeventh: '?',
-            minorSeventh: 'm7♯5',
-            majorSeventh: 'm(maj7)♯5',
+            noSeventh: {
+                literal: 'm♯5',
+                roman: '+',
+            },
+            diminishedSeventh: unknownChord,
+            minorSeventh: {
+                literal: 'm7♯5',
+                roman: '+7',
+            },
+            majorSeventh: {
+                literal: 'm(maj7)♯5',
+                roman: '+M7',
+            },
         },
     },
     majorThird: {
         diminshedFifth: {
-            noSeventh: '(♭5)',
-            diminishedSeventh: '?',
-            minorSeventh: '7♭5',
-            majorSeventh: 'maj7♭5',
+            noSeventh: {
+                literal: '(♭5)',
+                roman: '♭5',
+            },
+            diminishedSeventh: unknownChord,
+            minorSeventh: {
+                literal: '7♭5',
+                roman: '7♭5',
+            },
+            majorSeventh: {
+                literal: 'maj7♭5',
+                roman: 'M7♭5',
+            },
         },
         perfectFifth: {
-            noSeventh: '',
-            diminishedSeventh: '?',
-            minorSeventh: '7',
-            majorSeventh: 'maj7',
+            noSeventh: {
+                literal: '',
+                roman: '',
+            },
+            diminishedSeventh: unknownChord,
+            minorSeventh: {
+                literal: '7',
+                roman: '7',
+            },
+            majorSeventh: {
+                literal: 'maj7',
+                roman: 'M7',
+            },
         },
         augmentedFifth: {
-            noSeventh: 'aug',
-            diminishedSeventh: '?',
-            minorSeventh: '7♯5',
-            majorSeventh: 'maj7♯5',
+            noSeventh: {
+                literal: 'aug',
+                roman: '+',
+            },
+            diminishedSeventh: unknownChord,
+            minorSeventh: {
+                literal: '7♯5',
+                roman: '+7',
+            },
+            majorSeventh: {
+                literal: 'maj7♯5',
+                roman: '+M7',
+            },
         },
     },
 };
@@ -47,7 +109,7 @@ function getChordType(chordTones, semitoneOffsets) {
             || chordTones[1] !== 4
             || chordTones.length === 3 && chordTones[2] !== 6
             || chordTones.length > 3) {
-        return '?';
+        return unknownChord;
     }
 
     let third;
@@ -59,10 +121,7 @@ function getChordType(chordTones, semitoneOffsets) {
             third = chordMap.majorThird;
             break;
         default:
-            return {
-                type: '?',
-                style: '',
-            };
+            return unknownChord;
     }
 
     let fifth;
@@ -77,7 +136,7 @@ function getChordType(chordTones, semitoneOffsets) {
             fifth = third.augmentedFifth;
             break;
         default:
-            return '?';
+            return unknownChord;
     }
 
     if(semitoneOffsets.length === 2) {
@@ -92,18 +151,16 @@ function getChordType(chordTones, semitoneOffsets) {
         case 11:
             return fifth.majorSeventh;
         default:
-            return '?';
+            return unknownChord;
     }
 }
 
 function getChordStyle(third, fifth, seventh) {
     if(fifth === 6) {
-        if(seventh === 9) {
-            return 'diminished';
-        }
         if(seventh === 10) {
             return 'half-diminished';
         }
+        return 'diminished';
     }
     if(fifth === 8) {
         return 'augmented';
