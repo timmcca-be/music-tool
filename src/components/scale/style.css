@@ -13,6 +13,7 @@
 	margin: 3px;
 	font-weight: bold;
 	font-size: 1rem;
+	color: #000000b0;
 }
 
 @media only screen and (min-width: 360px) {
@@ -48,25 +49,25 @@
 }
 
 .major {
-	border-color: #d8534e;
-	color: #a72925;
-	background-color: #fefbfb;
+	border-color: #d84e60;
+	color: #a72536;
+	background-color: #faeaec;
 }
 
 .minor {
-	border-color: #5d9e18;
-	color: #497c13;
-	background-color: #fdfefb;
+	border-color: #189e66;
+	color: #12784e;
+	background-color: #e9fcf4;
 }
 
 .dominant {
 	border-color: #c94291;
 	color: #972b80;
-	background-color: #fefbfd;
+	background-color: #f9ebf3;
 }
 
 .diminished {
 	border-color: #3b7cb1;
 	color: #2f638e;
-	background-color: #fbfdfe;
+	background-color: #ecf3f9;
 }
