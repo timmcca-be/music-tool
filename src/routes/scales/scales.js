@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import style from './style';
-import Scale from '../../components/scale/scale';
+import DiatonicScale from '../../components/diatonicScale/diatonicScale';
 import { stopChord } from '../../utils/playChord';
 
 function formatNote(note) {
@@ -32,7 +32,7 @@ function Scales({matches: { keyCenter }}) {
 	const scales = [];
 	for(let i = 0; i < 7; i++) {
 		const mode = (3 + 4 * i) % 7;
-		scales[i] = <Scale key={i} keyCenter={keyCenter} mode={mode} addSeventh={addSeventh} reset={reset} />;
+		scales[i] = <DiatonicScale key={i} keyCenter={keyCenter} mode={mode} addSeventh={addSeventh} reset={reset} />;
 	}
 
 	const onBackgroundClick = event => {

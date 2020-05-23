@@ -9,12 +9,13 @@ for(let i = 0; i < 12; i++) {
 }
 
 let gainNode = null;
-function createOscillator(hz) {
+function playTone(hz) {
     const oscillator = audioCtx.createOscillator();
     oscillator.type = 'triangle';
     oscillator.frequency.value = hz;
     oscillator.connect(gainNode);
-    return oscillator;
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 2);
 }
 
 function stopChord() {
@@ -23,28 +24,17 @@ function stopChord() {
     }
 }
 
-function playChord(semitone, chordType, addSeventh) {
-    const chordTones = [
-        1,
-        chordType === 'major' || chordType === 'dominant' ? intervals[4] : intervals[3],
-        chordType === 'diminished' ? intervals[6] : intervals[7]
-    ];
-
-    if(addSeventh) {
-        chordTones[3] = chordType === 'major' ? intervals[11] : intervals[10];
-    }
-
+function playChord(baseSemitone, semitoneOffsets) {
     stopChord();
     gainNode = audioCtx.createGain();
     gainNode.connect(audioCtx.destination);
-    gainNode.gain.value = 1 / chordTones.length;
+    gainNode.gain.value = 1 / (semitoneOffsets.length + 1);
 
-    const baseFrequency = 440 * Math.pow(2, (semitone - 9) / 12);
-    const oscillators = chordTones.map(ratio => createOscillator(ratio * baseFrequency));
-    oscillators.forEach((oscillator) => {
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 2);
-    });
+    const baseFrequency = 440 * Math.pow(2, (baseSemitone - 9) / 12);
+    playTone(baseFrequency);
+    for(const offset of semitoneOffsets) {
+        playTone(intervals[offset] * baseFrequency);
+    }
     gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
 }
 

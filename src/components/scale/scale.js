@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { playChord } from '../../utils/playChord';
+import { getChordType } from '../../utils/getChordType';
 import style from './style';
 
 const noteScaleTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const modeNames = ['Ionian (Major)', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian', 'Aeolian (Minor)', 'Locrian'];
 
 function getSemitone(note) {
     let semitone = 2 * noteScaleTones.indexOf(note[0]);
@@ -23,53 +23,42 @@ function getSemitone(note) {
     return semitone;
 }
 
-function getChordType(scaleTone, mode) {
-    switch((scaleTone + mode) % 7) {
-        case 0: case 3:
-            return 'major';
-        case 1: case 2: case 5:
-            return 'minor';
-        case 4:
-            return 'dominant'
-        case 6:
-            return 'diminished';
+function semitonesBetweenScaleTones(start, end, flats) {
+    if(end < start) {
+        end += 7;
     }
+    let distance = Math.floor((end - start) / 7) * 12 + 2 * (end - start);
+    for(const flat of flats) {
+        if(end > flat + 7 || end > flat && start <= flat) {
+            distance--;
+        }
+    }
+    return distance;
 }
 
-function getDisplayType(chordType, addSeventh) {
-    switch(chordType) {
-        case 'major':
-            return addSeventh ? 'maj7' : '';
-        case 'minor':
-            return addSeventh ? 'm7' : 'm';
-        case 'dominant':
-            return addSeventh ? '7' : '';
-        case 'diminished':
-            return addSeventh ? 'm7♭5' : 'dim';
-    }
+function isMinorSeventh(start, end, flats) {
+    return semitonesBetweenScaleTones(start, end, flats) === 10;
 }
 
-function Scale({ keyCenter, mode, addSeventh, reset }) {
-	const firstFlat = mode <= 2 ? 2 - mode : 9 - mode;
-    const secondFlat = 6 - mode;
-    const startingScaleTone = noteScaleTones.indexOf(keyCenter[0]);
+function Scale({ keyCenter, name, flats, addSeventh, reset }) {
+    const scaleToneOffset = noteScaleTones.indexOf(keyCenter[0]);
     const startingSemitone = getSemitone(keyCenter);
     const chords = [];
+    const semitones = [];
     for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
-        const scaleToneName = noteScaleTones[(startingScaleTone + scaleTone) % 7];
+        semitones[scaleTone] = startingSemitone + semitonesBetweenScaleTones(0, scaleTone, flats);
+    }
 
-        let semitone = startingSemitone + 2 * scaleTone;
-        if(scaleTone > firstFlat) {
-            semitone--;
-        }
-        if(scaleTone > secondFlat) {
-            semitone--;
-        }
+    const chordTones = addSeventh ? [2, 4, 6] : [2, 4];
+
+    for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
+        const semitone = semitones[scaleTone];
+        const scaleToneName = noteScaleTones[(scaleToneOffset + scaleTone) % 7];
 
         let semitoneOffset = (semitone % 12) - getSemitone(scaleToneName);
         if(semitoneOffset > 6) {
             semitoneOffset = semitoneOffset - 12;
-        } else if(semitoneOffset < -6) {
+        } else if(semitoneOffset <= -6) {
             semitoneOffset = semitoneOffset + 12;
         }
 
@@ -90,25 +79,33 @@ function Scale({ keyCenter, mode, addSeventh, reset }) {
             }
         }
 
+        const chordBaseSemitone = startingSemitone <= 2 ? semitone : semitone - 12;
+        const chordSemitoneOffsets = chordTones.map(offset => semitonesBetweenScaleTones(scaleTone, scaleTone + offset, flats));
+        let { type, style } = getChordType(chordTones, chordSemitoneOffsets);
+        if(style === 'major/dominant') {
+            style = isMinorSeventh(scaleTone, scaleTone + 6, flats) ? 'dominant' : 'major';
+        }
+
         chords[scaleTone] = {
-            name: chordName,
-            type: getChordType(scaleTone, mode),
-            semitone: startingSemitone <= 2 ? semitone : semitone - 12,
+            name: chordName + type.replace('b', '♭').replace('s', '♯'),
+            style,
+            baseSemitone: chordBaseSemitone,
+            semitoneOffsets: chordSemitoneOffsets,
         };
     }
 
     const playChordAndReset = chord => {
-        playChord(chord.semitone, chord.type, addSeventh);
+        playChord(chord.baseSemitone, chord.semitoneOffsets);
         reset();
     };
 
 	return (
 		<section class={style.scale}>
-            <h3 class={style.modeTitle}>{modeNames[mode]}</h3>
+            <h3 class={style.modeTitle}>{name}</h3>
             { chords.map((chord, i) => (
-                <button key={i} class={`${style.chordButton} ${style[chord.type]}`}
+                <button key={i} class={`${style.chordButton} ${style[chord.style]}`}
                     onClick={() => playChordAndReset(chord)}>
-                    {chord.name}{getDisplayType(chord.type, addSeventh)}
+                    {chord.name}
                 </button>
             ))}
         </section>
