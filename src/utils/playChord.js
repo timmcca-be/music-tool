@@ -24,17 +24,12 @@ function stopChord() {
     }
 }
 
-function playChord(baseSemitone, semitoneOffsets) {
+function playChord(semitones) {
     stopChord();
     gainNode = audioCtx.createGain();
     gainNode.connect(audioCtx.destination);
-    gainNode.gain.value = 1 / (semitoneOffsets.length + 1);
-
-    const baseFrequency = 440 * Math.pow(2, (baseSemitone - 9) / 12);
-    playTone(baseFrequency);
-    for(const offset of semitoneOffsets) {
-        playTone(intervals[offset] * baseFrequency);
-    }
+    gainNode.gain.value = 1 / semitones.length;
+    semitones.forEach(semitone => playTone(440 * Math.pow(2, (semitone - 9) / 12)));
     gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
 }
 

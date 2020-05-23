@@ -3,11 +3,12 @@ import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
 import style from './style';
 
-const noteScaleTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+const NOTE_SCALE_TONES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+const MINOR_CHORD_TYPES = ['half-diminished', 'diminished', 'minor'];
 
 function getSemitone(note) {
-    let semitone = 2 * noteScaleTones.indexOf(note[0]);
+    let semitone = 2 * NOTE_SCALE_TONES.indexOf(note[0]);
     if(semitone > 4) {
         semitone--;
     }
@@ -30,10 +31,11 @@ const roundTowardZero = num => num | 0;
 
 function semitonesBetweenScaleTones(start, end, semitoneOffsets) {
     const octaveDistance = roundTowardZero((end - start) / 7);
-    const semitoneDistance = semitoneOffsets[end % 7] - semitoneOffsets[start % 7];
-    if(end % 7 < start % 7) {
+    if(end >= 7) {
+        const semitoneDistance = semitoneOffsets[end - 7] - semitoneOffsets[start];
         return 12 * (octaveDistance + 1) + semitoneDistance;
     }
+    const semitoneDistance = semitoneOffsets[end] - semitoneOffsets[start];
     return 12 * octaveDistance + semitoneDistance;
 }
 
@@ -65,57 +67,45 @@ function getAccidentals(semitoneDifference) {
 }
 
 function Scale({ keyCenter, name, semitoneOffsets, addSeventh, reset }) {
-    const scaleToneOffset = noteScaleTones.indexOf(keyCenter[0]);
+    const startingScaleTone = NOTE_SCALE_TONES.indexOf(keyCenter[0]);
     const startingSemitone = getSemitone(keyCenter);
+    const relativeChordTones = addSeventh ? [0, 2, 4, 6] : [0, 2, 4];
+
     const chords = [];
-
-    const chordTones = addSeventh ? [2, 4, 6] : [2, 4];
-
     for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
         const semitoneOffset = semitoneOffsets[scaleTone];
         const semitone = startingSemitone + semitoneOffset;
-        const scaleToneName = noteScaleTones[(scaleToneOffset + scaleTone) % 7];
 
-        let semitonesFromNaturalScaleTone = (semitone % 12) - getSemitone(scaleToneName);
-        if(semitonesFromNaturalScaleTone > 6) {
-            semitonesFromNaturalScaleTone = semitonesFromNaturalScaleTone - 12;
-        } else if(semitonesFromNaturalScaleTone <= -6) {
-            semitonesFromNaturalScaleTone += 12;
-        }
-
+        const scaleToneName = NOTE_SCALE_TONES[(startingScaleTone + scaleTone) % 7];
         const chordName = `${scaleToneName}${getAccidentals(semitone % 12 - getSemitone(scaleToneName))}`;
 
-        const chordBaseSemitone = startingSemitone <= 2 ? semitone : semitone - 12;
-        const chordSemitoneOffsets = chordTones.map(offset => (
-            semitonesBetweenScaleTones(scaleTone, scaleTone + offset, semitoneOffsets)
-        ));
-
-        const chordStyle = getChordStyle(
-            semitonesBetweenScaleTones(scaleTone, scaleTone + 2, semitoneOffsets),
-            semitonesBetweenScaleTones(scaleTone, scaleTone + 4, semitoneOffsets),
-            semitonesBetweenScaleTones(scaleTone, scaleTone + 6, semitoneOffsets),
+        const semitonesFromRoot = scaleToneOffset => (
+            semitonesBetweenScaleTones(scaleTone, scaleTone + scaleToneOffset, semitoneOffsets)
         );
 
+        const chordBaseSemitone = startingSemitone <= 2 ? semitone : semitone - 12;
+        const chordSemitoneOffsets = relativeChordTones.map(semitonesFromRoot);
+        const chordStyle = getChordStyle(semitonesFromRoot(2), semitonesFromRoot(4), semitonesFromRoot(6));
+
         const semitonesFromIonian = semitoneOffset % 12 - getIonianSemitone(scaleTone);
-        let romanNumeral = `${getAccidentals(semitonesFromIonian)}${romanNumerals[scaleTone]}`;
-        if(['half-diminished', 'diminished', 'minor'].indexOf(chordStyle) !== -1) {
+        let romanNumeral = `${getAccidentals(semitonesFromIonian)}${ROMAN_NUMERALS[scaleTone]}`;
+        if(MINOR_CHORD_TYPES.indexOf(chordStyle) !== -1) {
             romanNumeral = romanNumeral.toLowerCase();
         }
 
-        const chordType = getChordType(chordTones, chordSemitoneOffsets);
+        const chordType = getChordType(relativeChordTones, chordSemitoneOffsets);
 
         chords[scaleTone] = {
             name: `${chordName}${chordType.literal}`,
             romanNumeral,
             romanNumeralSuperscript: chordType.roman,
             style: chordStyle,
-            baseSemitone: chordBaseSemitone,
-            semitoneOffsets: chordSemitoneOffsets,
+            semitones: chordSemitoneOffsets.map(offset => offset + chordBaseSemitone),
         };
     }
 
-    const handleChordButtonClick = (chord, event) => {
-        playChord(chord.baseSemitone, chord.semitoneOffsets);
+    const handleChordButtonClick = (semitones, event) => {
+        playChord(semitones);
         reset();
         event.stopPropagation();
     };
@@ -125,12 +115,12 @@ function Scale({ keyCenter, name, semitoneOffsets, addSeventh, reset }) {
             <h3 class={style.modeTitle}>{name}</h3>
             { chords.map((chord, i) => (
                 <button key={i} class={`${style.chordButton} ${style[chord.style]}`}
-                    onClick={event => handleChordButtonClick(chord, event)}>
+                    onClick={event => handleChordButtonClick(chord.semitones, event)}>
                     {chord.name}<small>{chord.romanNumeral}<sup>{chord.romanNumeralSuperscript}</sup></small>
                 </button>
             ))}
         </section>
-	)
+	);
 }
 
 export default Scale;

@@ -105,15 +105,16 @@ const chordMap = {
 
 function getChordType(chordTones, semitoneOffsets) {
     // TODO: support more chord types
-    if(chordTones[0] !== 2
-            || chordTones[1] !== 4
-            || chordTones.length === 3 && chordTones[2] !== 6
-            || chordTones.length > 3) {
+    if(chordTones[0] !== 0
+            || chordTones[1] !== 2
+            || chordTones[2] !== 4
+            || chordTones.length === 4 && chordTones[3] !== 6
+            || chordTones.length > 4) {
         return unknownChord;
     }
 
     let third;
-    switch(semitoneOffsets[0]) {
+    switch(semitoneOffsets[1]) {
         case 3:
             third = chordMap.minorThird;
             break;
@@ -125,7 +126,7 @@ function getChordType(chordTones, semitoneOffsets) {
     }
 
     let fifth;
-    switch(semitoneOffsets[1]) {
+    switch(semitoneOffsets[2]) {
         case 6:
             fifth = third.diminshedFifth;
             break;
@@ -139,11 +140,11 @@ function getChordType(chordTones, semitoneOffsets) {
             return unknownChord;
     }
 
-    if(semitoneOffsets.length === 2) {
+    if(semitoneOffsets.length === 3) {
         return fifth.noSeventh;
     }
 
-    switch(semitoneOffsets[2]) {
+    switch(semitoneOffsets[3]) {
         case 9:
             return fifth.diminishedSeventh;
         case 10:
