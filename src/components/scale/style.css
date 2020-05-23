@@ -54,10 +54,18 @@
 	background-color: #faeaec;
 }
 
+.major:hover {
+	background-color: #fdf7f8;
+}
+
 .minor {
 	border-color: #189e66;
 	color: #12784e;
 	background-color: #e9fcf4;
+}
+
+.minor:hover {
+	background-color: #f6fefa;
 }
 
 .dominant {
@@ -66,8 +74,16 @@
 	background-color: #f9ebf3;
 }
 
+.dominant:hover {
+	background-color: #fdf7fa;
+}
+
 .diminished {
 	border-color: #3b7cb1;
 	color: #2f638e;
 	background-color: #ecf3f9;
+}
+
+.diminished:hover {
+	background-color: #f7fafc;
 }
