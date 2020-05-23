@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { playChord } from '../../utils/playChord';
-import { getChordType } from '../../utils/getChordType';
+import { getChordType, getChordStyle } from '../../utils/getChordType';
 import style from './style';
 
 const noteScaleTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -23,72 +23,64 @@ function getSemitone(note) {
     return semitone;
 }
 
-function semitonesBetweenScaleTones(start, end, flats) {
-    if(end < start) {
-        end += 7;
+const roundTowardZero = num => num | 0;
+
+function semitonesBetweenScaleTones(start, end, semitoneOffsets) {
+    const octaveDistance = roundTowardZero((end - start) / 7);
+    const semitoneDistance = semitoneOffsets[end % 7] - semitoneOffsets[start % 7];
+    if(end % 7 < start % 7) {
+        return 12 * (octaveDistance + 1) + semitoneDistance;
     }
-    let distance = Math.floor((end - start) / 7) * 12 + 2 * (end - start);
-    for(const flat of flats) {
-        if(end > flat + 7 || end > flat && start <= flat) {
-            distance--;
-        }
-    }
-    return distance;
+    return 12 * octaveDistance + semitoneDistance;
 }
 
-function isMinorSeventh(start, end, flats) {
-    return semitonesBetweenScaleTones(start, end, flats) === 10;
-}
-
-function Scale({ keyCenter, name, flats, addSeventh, reset }) {
+function Scale({ keyCenter, name, semitoneOffsets, addSeventh, reset }) {
     const scaleToneOffset = noteScaleTones.indexOf(keyCenter[0]);
     const startingSemitone = getSemitone(keyCenter);
     const chords = [];
-    const semitones = [];
-    for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
-        semitones[scaleTone] = startingSemitone + semitonesBetweenScaleTones(0, scaleTone, flats);
-    }
 
     const chordTones = addSeventh ? [2, 4, 6] : [2, 4];
 
     for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
-        const semitone = semitones[scaleTone];
+        const semitone = startingSemitone + semitoneOffsets[scaleTone];
         const scaleToneName = noteScaleTones[(scaleToneOffset + scaleTone) % 7];
 
-        let semitoneOffset = (semitone % 12) - getSemitone(scaleToneName);
-        if(semitoneOffset > 6) {
-            semitoneOffset = semitoneOffset - 12;
-        } else if(semitoneOffset <= -6) {
-            semitoneOffset = semitoneOffset + 12;
+        let semitonesFromNaturalScaleTone = (semitone % 12) - getSemitone(scaleToneName);
+        if(semitonesFromNaturalScaleTone > 6) {
+            semitonesFromNaturalScaleTone = semitonesFromNaturalScaleTone - 12;
+        } else if(semitonesFromNaturalScaleTone <= -6) {
+            semitonesFromNaturalScaleTone += 12;
         }
 
         let chordName = scaleToneName;
-        if(semitoneOffset < 0) {
-            for(let i = -1; i > semitoneOffset; i -= 2) {
+        if(semitonesFromNaturalScaleTone < 0) {
+            for(let i = -1; i > semitonesFromNaturalScaleTone; i -= 2) {
                 chordName += '𝄫';
             }
-            if(semitoneOffset % 2 !== 0) {
+            if(semitonesFromNaturalScaleTone % 2 !== 0) {
                 chordName += '♭';
             }
         } else {
-            for(let i = 1; i < semitoneOffset; i += 2) {
+            for(let i = 1; i < semitonesFromNaturalScaleTone; i += 2) {
                 chordName += '𝄪';
             }
-            if(semitoneOffset % 2 !== 0) {
+            if(semitonesFromNaturalScaleTone % 2 !== 0) {
                 chordName += '♯';
             }
         }
 
         const chordBaseSemitone = startingSemitone <= 2 ? semitone : semitone - 12;
-        const chordSemitoneOffsets = chordTones.map(offset => semitonesBetweenScaleTones(scaleTone, scaleTone + offset, flats));
-        let { type, style } = getChordType(chordTones, chordSemitoneOffsets);
-        if(style === 'major/dominant') {
-            style = isMinorSeventh(scaleTone, scaleTone + 6, flats) ? 'dominant' : 'major';
-        }
+        const chordSemitoneOffsets = chordTones.map(offset => (
+            semitonesBetweenScaleTones(scaleTone, scaleTone + offset, semitoneOffsets)
+        ));
 
         chords[scaleTone] = {
-            name: chordName + type.replace('b', '♭').replace('s', '♯'),
-            style,
+            name: chordName + getChordType(chordTones, chordSemitoneOffsets),
+            style: getChordStyle(
+                semitonesBetweenScaleTones(scaleTone, scaleTone + 2, semitoneOffsets),
+                semitonesBetweenScaleTones(scaleTone, scaleTone + 4, semitoneOffsets),
+                semitonesBetweenScaleTones(scaleTone, scaleTone + 6, semitoneOffsets),
+            ),
             baseSemitone: chordBaseSemitone,
             semitoneOffsets: chordSemitoneOffsets,
         };

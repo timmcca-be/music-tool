@@ -86,3 +86,13 @@
 .diminished:hover {
 	background-color: #f7fafc;
 }
+
+.augmented {
+	border-color: #854b14;
+	color: #854b14;
+	background-color: #fcf2e9;
+}
+
+.augmented:hover {
+	background-color: #f6fefa;
+}
