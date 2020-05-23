@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import style from './style';
 import Scale from '../../components/scale/scale';
 import { stopChord } from '../../utils/playChord';
@@ -13,12 +13,26 @@ function Scales({matches: { keyCenter }}) {
     if(typeof window !== 'undefined') {
         document.title = `Key of ${formattedKey}`;
     }
-	const [addSevenths, setAddSevenths] = useState(false);
-	
+	const [addSeventh, setAddSeventh] = useState(false);
+
+	useEffect(() => {
+		const keyDown = event => {
+			if(event.key === '7') {
+				setAddSeventh(!addSeventh);
+			}
+		};
+		document.addEventListener('keydown', keyDown);
+		return () => {
+			document.removeEventListener('keydown', keyDown);
+		}
+	});
+
+	const reset = () => setAddSeventh(false);
+
 	const scales = [];
 	for(let i = 0; i < 7; i++) {
 		const mode = (3 + 4 * i) % 7;
-		scales[i] = <Scale key={i} keyCenter={keyCenter} mode={mode} addSevenths={addSevenths} />;
+		scales[i] = <Scale key={i} keyCenter={keyCenter} mode={mode} addSeventh={addSeventh} reset={reset} />;
 	}
 
 	const onBackgroundClick = event => {
@@ -30,9 +44,9 @@ function Scales({matches: { keyCenter }}) {
 	return (
 		<main onClick={onBackgroundClick}>
 			<h1>Key of {formattedKey}</h1>
-			<button onClick={() => setAddSevenths(!addSevenths)}
-				class={addSevenths ? style.toggle : `${style.toggle} ${style.toggleOn}`}>
-				{addSevenths ? 'Remove' : 'Add'} sevenths
+			<button onClick={() => setAddSeventh(!addSeventh)}
+				class={addSeventh ? style.toggle : `${style.toggle} ${style.toggleOn}`}>
+				{addSeventh ? 'Remove' : 'Add'} 7th
 			</button>
 			{ scales }
 		</main>

@@ -9,7 +9,6 @@
 .chordButton {
 	width: calc(100% / 3 - 6px);
 	padding: 0.6rem;
-	border-width: 2px;
 	margin: 3px;
 	font-weight: bold;
 	font-size: 1rem;
@@ -49,7 +48,7 @@
 }
 
 .major {
-	border-color: #d84e60;
+	border-color: #a72536;
 	color: #a72536;
 	background-color: #faeaec;
 }
@@ -59,7 +58,7 @@
 }
 
 .minor {
-	border-color: #189e66;
+	border-color: #12784e;
 	color: #12784e;
 	background-color: #e9fcf4;
 }
@@ -69,7 +68,7 @@
 }
 
 .dominant {
-	border-color: #c94291;
+	border-color: #972b80;
 	color: #972b80;
 	background-color: #f9ebf3;
 }
@@ -79,7 +78,7 @@
 }
 
 .diminished {
-	border-color: #3b7cb1;
+	border-color: #2f638e;
 	color: #2f638e;
 	background-color: #ecf3f9;
 }

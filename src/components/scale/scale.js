@@ -36,20 +36,20 @@ function getChordType(scaleTone, mode) {
     }
 }
 
-function getDisplayType(chordType, addSevenths) {
+function getDisplayType(chordType, addSeventh) {
     switch(chordType) {
         case 'major':
-            return addSevenths ? 'maj7' : '';
+            return addSeventh ? 'maj7' : '';
         case 'minor':
-            return addSevenths ? 'm7' : 'm';
+            return addSeventh ? 'm7' : 'm';
         case 'dominant':
-            return addSevenths ? '7' : '';
+            return addSeventh ? '7' : '';
         case 'diminished':
-            return addSevenths ? 'm7♭5' : 'dim';
+            return addSeventh ? 'm7♭5' : 'dim';
     }
 }
 
-function Scale({ keyCenter, mode, addSevenths }) {
+function Scale({ keyCenter, mode, addSeventh, reset }) {
 	const firstFlat = mode <= 2 ? 2 - mode : 9 - mode;
     const secondFlat = 6 - mode;
     const startingScaleTone = noteScaleTones.indexOf(keyCenter[0]);
@@ -97,13 +97,18 @@ function Scale({ keyCenter, mode, addSevenths }) {
         };
     }
 
+    const playChordAndReset = chord => {
+        playChord(chord.semitone, chord.type, addSeventh);
+        reset();
+    };
+
 	return (
 		<section class={style.scale}>
             <h3 class={style.modeTitle}>{modeNames[mode]}</h3>
             { chords.map((chord, i) => (
                 <button key={i} class={`${style.chordButton} ${style[chord.type]}`}
-                    onClick={() => playChord(chord.semitone, chord.type, addSevenths)}>
-                    {chord.name}{getDisplayType(chord.type, addSevenths)}
+                    onClick={() => playChordAndReset(chord)}>
+                    {chord.name}{getDisplayType(chord.type, addSeventh)}
                 </button>
             ))}
         </section>
