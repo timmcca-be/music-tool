@@ -8,11 +8,17 @@
 
 .chordButton {
 	width: calc(100% / 3 - 6px);
-	padding: 0.6rem;
+	padding-top: 0.2rem;
 	margin: 3px;
 	font-weight: bold;
 	font-size: 1rem;
-	color: #000000b0;
+}
+
+.chordButton small {
+	display: block;
+	font-family: 'Times New Roman', Times, serif;
+	font-weight: normal;
+	opacity: 0.8;
 }
 
 @media only screen and (min-width: 360px) {
@@ -84,6 +90,16 @@
 }
 
 .diminished:hover {
+	background-color: #f7fafc;
+}
+
+.half-diminished {
+	border-color: #2f638e;
+	color: #2f638e;
+	background-color: #ecf3f9;
+}
+
+.half-diminished:hover {
 	background-color: #f7fafc;
 }
 

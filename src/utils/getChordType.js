@@ -98,7 +98,12 @@ function getChordType(chordTones, semitoneOffsets) {
 
 function getChordStyle(third, fifth, seventh) {
     if(fifth === 6) {
-        return 'diminished';
+        if(seventh === 9) {
+            return 'diminished';
+        }
+        if(seventh === 10) {
+            return 'half-diminished';
+        }
     }
     if(fifth === 8) {
         return 'augmented';
