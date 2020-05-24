@@ -90,8 +90,7 @@ function Scales({matches: { keyCenter }}) {
 			</section>
 			<ScalesContext.Provider value={{
 				startingScaleTone: getScaleTone(keyCenter),
-				startingSemitone,
-				octave: startingSemitone <= 2 ? 0 : -1,
+				startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
 				chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
 				awaitingInversion,
 				resetChordType: () => setAddSeventh(false),

@@ -5,8 +5,8 @@ import Chord from './chord';
 import style from './scaleStyle';
 
 function Scale({ name, semitoneOffsets }) {
-    const { startingSemitone, octave } = useContext(ScalesContext);
-    const semitones = semitoneOffsets.map(offset => startingSemitone + offset + 12 * octave);
+    const { startingSemitone } = useContext(ScalesContext);
+    const semitones = semitoneOffsets.map(offset => startingSemitone + offset);
 
     const chords = [];
     for(let scaleTone = 0; scaleTone < 7; scaleTone++) {
