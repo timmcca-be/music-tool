@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useContext } from 'preact/hooks';
 import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
-import { getAccidentals } from '../../utils/musicUtils';
+import { getSemitone, getNote } from '../../utils/musicUtils';
 import ScalesContext from '../../context/scalesContext';
 import style from './scaleStyle';
 
@@ -23,8 +23,45 @@ function semitonesBetweenScaleTones(start, end, semitones) {
     return 12 * octaveDistance + semitoneDistance;
 }
 
-function Chord({ note, scaleSemitones, scaleTone }) {
-    const { chordTones, resetChordType, awaitingInversion } = useContext(ScalesContext);
+function getAccidentals(semitoneDifference) {
+    if(semitoneDifference > 6) {
+        semitoneDifference -= 12;
+    } else if(semitoneDifference <= -6) {
+        semitoneDifference += 12;
+    }
+
+    let accidentals = ''
+    if(semitoneDifference < 0) {
+        for(let i = -1; i > semitoneDifference; i -= 2) {
+            accidentals += '𝄫';
+        }
+        if(semitoneDifference % 2 !== 0) {
+            accidentals += '♭';
+        }
+    } else {
+        for(let i = 1; i < semitoneDifference; i += 2) {
+            accidentals += '𝄪';
+        }
+        if(semitoneDifference % 2 !== 0) {
+            accidentals += '♯';
+        }
+    }
+
+    return accidentals;
+}
+
+function Chord({ scaleSemitones, scaleTone }) {
+    const {
+        startingScaleTone,
+        chordTones,
+        resetChordType,
+        awaitingInversion,
+    } = useContext(ScalesContext);
+
+    const baseSemitone = scaleSemitones[scaleTone];
+
+    const scaleToneName = getNote(startingScaleTone + scaleTone);
+    const accidentals = getAccidentals(baseSemitone % 12 - getSemitone(scaleToneName));
 
     const semitonesFromRoot = scaleToneOffset => (
         semitonesBetweenScaleTones(scaleTone, scaleTone + scaleToneOffset, scaleSemitones)
@@ -33,14 +70,14 @@ function Chord({ note, scaleSemitones, scaleTone }) {
     const chordSemitoneOffsets = chordTones.map(semitonesFromRoot);
     const chordStyle = getChordStyle(semitonesFromRoot(2), semitonesFromRoot(4), semitonesFromRoot(6));
 
-    const semitonesFromIonian = (scaleSemitones[scaleTone] - scaleSemitones[0]) % 12 - getIonianSemitone(scaleTone);
+    const semitonesFromIonian = (baseSemitone - scaleSemitones[0]) % 12 - getIonianSemitone(scaleTone);
     let romanNumeral = `${getAccidentals(semitonesFromIonian)}${ROMAN_NUMERALS[scaleTone]}`;
     if(MINOR_CHORD_TYPES.indexOf(chordStyle) !== -1) {
         romanNumeral = romanNumeral.toLowerCase();
     }
 
     const type = getChordType(chordTones, chordSemitoneOffsets);
-    const chordSemitones = chordSemitoneOffsets.map(offset => offset + scaleSemitones[scaleTone]);
+    const chordSemitones = chordSemitoneOffsets.map(offset => offset + baseSemitone);
 
     return (
         <button class={`${style.chordButton} ${style[chordStyle]}`}
@@ -49,7 +86,7 @@ function Chord({ note, scaleSemitones, scaleTone }) {
                 resetChordType();
                 event.stopPropagation();
             }}>
-            {note}{type.literal}{awaitingInversion ? '/' : ''}
+            {scaleToneName}{accidentals}{type.literal}{awaitingInversion ? '/' : ''}
             <small>{romanNumeral}<sup>{type.roman}</sup></small>
         </button>
     );

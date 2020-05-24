@@ -4,7 +4,7 @@ import style from './scalesStyle';
 import ScalesContext from '../../context/scalesContext';
 import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
-import { getScaleSemitoneOffsets } from '../../utils/musicUtils';
+import { getScaleSemitoneOffsets, getScaleTone, getSemitone } from '../../utils/musicUtils';
 import { stopChord } from '../../utils/playChord';
 
 const nonDiatonicScales = [
@@ -54,9 +54,6 @@ function Scales({matches: { keyCenter }}) {
 		}
 	});
 
-	const resetChordType = () => setAddSeventh(false);
-	const chordTones = addSeventh ? [0, 2, 4, 6] : [0, 2, 4];
-
 	let scales;
 	if(diatonic) {
 		scales = [];
@@ -76,6 +73,8 @@ function Scales({matches: { keyCenter }}) {
 		}
 	};
 
+	const startingSemitone = getSemitone(keyCenter);
+
 	return (
 		<main onClick={onBackgroundClick}>
 			<h1>Key of {formattedKey}</h1>
@@ -90,10 +89,12 @@ function Scales({matches: { keyCenter }}) {
 				</button>
 			</section>
 			<ScalesContext.Provider value={{
-				keyCenter,
-				chordTones,
+				startingScaleTone: getScaleTone(keyCenter),
+				startingSemitone,
+				octave: startingSemitone <= 2 ? 0 : -1,
+				chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
 				awaitingInversion,
-				resetChordType,
+				resetChordType: () => setAddSeventh(false),
 			}}>
 				<button onClick={() => setAddSeventh(!addSeventh)}
 					class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>

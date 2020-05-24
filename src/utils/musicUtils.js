@@ -7,31 +7,28 @@ function getScaleSemitoneOffsets(firstFlat, secondFlat) {
     return semitoneOffsets;
 }
 
-function getAccidentals(semitoneDifference) {
-    if(semitoneDifference > 6) {
-        semitoneDifference -= 12;
-    } else if(semitoneDifference <= -6) {
-        semitoneDifference += 12;
-    }
+const NOTE_SCALE_TONES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-    let accidentals = ''
-    if(semitoneDifference < 0) {
-        for(let i = -1; i > semitoneDifference; i -= 2) {
-            accidentals += '𝄫';
-        }
-        if(semitoneDifference % 2 !== 0) {
-            accidentals += '♭';
-        }
-    } else {
-        for(let i = 1; i < semitoneDifference; i += 2) {
-            accidentals += '𝄪';
-        }
-        if(semitoneDifference % 2 !== 0) {
-            accidentals += '♯';
-        }
-    }
+const getNote = scaleTone => NOTE_SCALE_TONES[scaleTone % 7];
 
-    return accidentals;
+const getScaleTone = note => NOTE_SCALE_TONES.indexOf(note[0]);
+
+function getSemitone(note) {
+    let semitone = 2 * getScaleTone(note);
+    if(semitone > 4) {
+        semitone--;
+    }
+	for(let i = 1; i < note.length; i++) {
+		switch(note[i]) {
+			case 'b':
+				semitone--;
+				break;
+			case 's':
+				semitone++;
+				break;
+		}
+	}
+    return semitone;
 }
 
-export { getScaleSemitoneOffsets, getAccidentals }
+export { getScaleSemitoneOffsets, getNote, getScaleTone, getSemitone };
