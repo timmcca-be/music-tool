@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { getAccidentals } from '../../utils/musicUtils';
 import Chord from './chord';
-import style from './style';
+import style from './scaleStyle';
 
 const NOTE_SCALE_TONES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 

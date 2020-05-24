@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import style from './style';
+import style from './scalesStyle';
 import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
 import { getScaleSemitoneOffsets } from '../../utils/musicUtils';

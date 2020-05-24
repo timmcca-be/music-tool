@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import style from './style';
+import style from './mainStyle';
 import { Link } from 'preact-router/match';
 
 const notes = ['C', 'G', 'D', 'A', 'E', 'B', 'Fs', 'Db', 'Ab', 'Eb', 'Bb', 'F'];

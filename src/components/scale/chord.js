@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
 import { getAccidentals } from '../../utils/musicUtils';
-import style from './style';
+import style from './scaleStyle';
 
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const MINOR_CHORD_TYPES = ['half-diminished', 'diminished', 'minor'];
