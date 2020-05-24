@@ -1,7 +1,9 @@
 import { h } from 'preact';
+import { useContext } from 'preact/hooks';
 import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
 import { getAccidentals } from '../../utils/musicUtils';
+import ScalesContext from '../../context/scalesContext';
 import style from './scaleStyle';
 
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
@@ -21,7 +23,9 @@ function semitonesBetweenScaleTones(start, end, semitones) {
     return 12 * octaveDistance + semitoneDistance;
 }
 
-function Chord({ note, scaleSemitones, scaleTone, chordTones, reset }) {
+function Chord({ note, scaleSemitones, scaleTone }) {
+    const { chordTones, resetChordType, awaitingInversion } = useContext(ScalesContext);
+
     const semitonesFromRoot = scaleToneOffset => (
         semitonesBetweenScaleTones(scaleTone, scaleTone + scaleToneOffset, scaleSemitones)
     );
@@ -42,10 +46,10 @@ function Chord({ note, scaleSemitones, scaleTone, chordTones, reset }) {
         <button class={`${style.chordButton} ${style[chordStyle]}`}
             onClick={event => {
                 playChord(chordSemitones);
-                reset();
+                resetChordType();
                 event.stopPropagation();
             }}>
-            {note}{type.literal}
+            {note}{type.literal}{awaitingInversion ? '/' : ''}
             <small>{romanNumeral}<sup>{type.roman}</sup></small>
         </button>
     );

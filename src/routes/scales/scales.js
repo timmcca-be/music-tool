@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import style from './scalesStyle';
+import ScalesContext from '../../context/scalesContext';
 import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
 import { getScaleSemitoneOffsets } from '../../utils/musicUtils';
@@ -27,17 +28,23 @@ function formatNote(note) {
 }
 
 function Scales({matches: { keyCenter }}) {
+	const [addSeventh, setAddSeventh] = useState(false);
+	const [diatonic, setDiatonic] = useState(true);
+	const [awaitingInversion, setAwaitingInversion] = useState(false);
+
     const formattedKey = formatNote(keyCenter);
     if(typeof window !== 'undefined') {
         document.title = `Key of ${formattedKey}`;
 	}
 
-	const [addSeventh, setAddSeventh] = useState(false);
-	const [diatonic, setDiatonic] = useState(true);
-
 	useEffect(() => {
 		const keyDown = event => {
-			if(event.key === '7') {
+			if(event.key === '/') {
+				event.preventDefault();
+				setAwaitingInversion(!awaitingInversion);
+			} else if(awaitingInversion) {
+				// TODO
+			} else {
 				setAddSeventh(!addSeventh);
 			}
 		};
@@ -47,7 +54,7 @@ function Scales({matches: { keyCenter }}) {
 		}
 	});
 
-	const reset = () => setAddSeventh(false);
+	const resetChordType = () => setAddSeventh(false);
 	const chordTones = addSeventh ? [0, 2, 4, 6] : [0, 2, 4];
 
 	let scales;
@@ -55,22 +62,11 @@ function Scales({matches: { keyCenter }}) {
 		scales = [];
 		for(let i = 0; i < 7; i++) {
 			const mode = (3 + 4 * i) % 7;
-			scales[i] = (
-				<DiatonicScale key={i}
-					keyCenter={keyCenter}
-					mode={mode}
-					chordTones={chordTones}
-					reset={reset} />
-			);
+			scales[i] = <DiatonicScale key={i} mode={mode} />;
 		}
 	} else {
 		scales = nonDiatonicScales.map((scale, i) => (
-			<Scale key={i}
-				keyCenter={keyCenter}
-				name={scale.name}
-				semitoneOffsets={scale.semitoneOffsets}
-				chordTones={chordTones}
-				reset={reset} />
+			<Scale key={i} name={scale.name} semitoneOffsets={scale.semitoneOffsets} />
 		));
 	}
 
@@ -93,11 +89,18 @@ function Scales({matches: { keyCenter }}) {
 					Non-diatonic scales
 				</button>
 			</section>
-			<button onClick={() => setAddSeventh(!addSeventh)}
-				class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>
-				{addSeventh ? 'Disable' : 'Enable'} 7th
-			</button>
-			{ scales }
+			<ScalesContext.Provider value={{
+				keyCenter,
+				chordTones,
+				awaitingInversion,
+				resetChordType,
+			}}>
+				<button onClick={() => setAddSeventh(!addSeventh)}
+					class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>
+					{addSeventh ? 'Disable' : 'Enable'} 7th
+				</button>
+				{ scales }
+			</ScalesContext.Provider>
 		</main>
 	)
 }

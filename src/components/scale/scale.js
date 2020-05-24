@@ -1,5 +1,7 @@
 import { h } from 'preact';
+import { useContext } from 'preact/hooks';
 import { getAccidentals } from '../../utils/musicUtils';
+import ScalesContext from '../../context/scalesContext';
 import Chord from './chord';
 import style from './scaleStyle';
 
@@ -23,7 +25,8 @@ function getSemitone(note) {
     return semitone;
 }
 
-function Scale({ keyCenter, name, semitoneOffsets, chordTones, reset }) {
+function Scale({ name, semitoneOffsets }) {
+    const { keyCenter } = useContext(ScalesContext);
     const startingScaleTone = NOTE_SCALE_TONES.indexOf(keyCenter[0]);
     const startingSemitone = getSemitone(keyCenter);
     const octave = startingSemitone <= 2 ? 0 : -1;
@@ -40,9 +43,7 @@ function Scale({ keyCenter, name, semitoneOffsets, chordTones, reset }) {
                     <Chord key={scaleTone}
                         note={`${scaleToneName}${accidentals}`}
                         scaleSemitones={semitones}
-                        scaleTone={scaleTone}
-                        chordTones={chordTones}
-                        reset={reset} />
+                        scaleTone={scaleTone} />
                 );
             })}
         </section>
