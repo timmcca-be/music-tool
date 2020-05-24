@@ -3,7 +3,7 @@
 	position: sticky;
 	top: 0;
 	background-color: #FAFAFA;
-	padding: 0.4rem;
+	padding: 0.8rem 0.2rem;
 	z-index: 1;
 }
 
@@ -15,37 +15,5 @@
 
 .toggle {
 	width: 7rem;
-}
-
-.toggle, .selectInputGroup {
-	margin: 0.4rem 0.5rem;
-}
-
-.pill {
-	height: 2.5rem;
-	width: 50%;
-	max-width: 11rem;
-	display: inline-block;
-	border-radius: 0;
-}
-
-.pill:first-of-type {
-	border-top-left-radius: 0.3rem;
-	border-bottom-left-radius: 0.3rem;
-}
-
-.pill:last-of-type {
-	border-top-right-radius: 0.3rem;
-	border-bottom-right-radius: 0.3rem;
-}
-
-.toggleOn {
-	border-color: #0678c4;
-	background-color: #f2f8fc;
-	font-weight: bold;
-	color: #0678c4; 
-}
-
-.toggleOn:hover {
-	background-color: #f9fcfd;
+	margin-right: 1rem;
 }

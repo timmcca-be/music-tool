@@ -6,8 +6,10 @@ import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
 import { getScaleSemitoneOffsets, getScaleTone, getSemitone } from '../../utils/musicUtils';
 import { stopChord } from '../../utils/playChord';
+import Switcher from '../../components/switcher/switcher';
+import RangeSelect from '../../components/rangeSelect/rangeSelect';
 
-const nonDiatonicScales = [
+const NON_DIATONIC_SCALE_TYPES = [
 	{
 		name: 'Harmonic Minor',
 		semitoneOffsets: [0, 2, 3, 5, 7, 8, 11],
@@ -60,6 +62,20 @@ function Scales({matches: { keyCenter }}) {
 		}
 	});
 
+	const startingSemitone = getSemitone(keyCenter);
+	const context = {
+		startingScaleTone: getScaleTone(keyCenter),
+		startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
+		chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
+		awaitingInversion,
+		root,
+		resetChordType: () => {
+			setAddSeventh(false);
+			setRoot(1);
+			setAwaitingInversion(false);
+		},
+	};
+
 	let scales;
 	if(diatonic) {
 		scales = [];
@@ -68,18 +84,10 @@ function Scales({matches: { keyCenter }}) {
 			scales[i] = <DiatonicScale key={i} mode={mode} />;
 		}
 	} else {
-		scales = nonDiatonicScales.map((scale, i) => (
+		scales = NON_DIATONIC_SCALE_TYPES.map((scale, i) => (
 			<Scale key={i} name={scale.name} semitoneOffsets={scale.semitoneOffsets} />
 		));
 	}
-
-	const onBackgroundClick = event => {
-		if(event.target.tagName !== 'BUTTON') {
-			stopChord();
-		}
-	};
-
-	const startingSemitone = getSemitone(keyCenter);
 
 	const rootOptions = [];
 	for(let i = 1; i <= 7; i++) {
@@ -87,45 +95,28 @@ function Scales({matches: { keyCenter }}) {
 	}
 
 	return (
-		<main onClick={onBackgroundClick}>
+		<main onClick={event => {
+			if(event.target.tagName !== 'BUTTON') {
+				stopChord();
+			}
+		}}>
 			<h1>Key of {formattedKey}</h1>
-			<section>
-				<button onClick={() => setDiatonic(true)}
-					class={diatonic ? `${style.pill} ${style.toggleOn}` : style.pill}>
-					Diatonic scales
+			<Switcher value={diatonic} setValue={setDiatonic}
+				items={{
+					'Diatonic scales': true,
+					'Non-diatonic scales': false,
+				}} />
+			<aside class={style.chordControls}>
+				<button onClick={() => setAddSeventh(!addSeventh)}
+					class={addSeventh ? `${style.toggle} enabled` : style.toggle}>
+					{addSeventh ? 'Disable' : 'Enable'} 7th
 				</button>
-				<button onClick={() => setDiatonic(false)}
-					class={diatonic ? style.pill : `${style.pill} ${style.toggleOn}`}>
-					Non-diatonic scales
-				</button>
-			</section>
-			<ScalesContext.Provider value={{
-				startingScaleTone: getScaleTone(keyCenter),
-				startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
-				chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
-				awaitingInversion,
-				root,
-				resetChordType: () => {
-					setAddSeventh(false);
-					setRoot(1);
+				<RangeSelect label="Root interval" max={7} value={root} setValue={newRoot => {
 					setAwaitingInversion(false);
-				},
-			}}>
-				<aside class={style.chordControls}>
-					<button onClick={() => setAddSeventh(!addSeventh)}
-						class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>
-						{addSeventh ? 'Disable' : 'Enable'} 7th
-					</button>
-					<fieldset class={style.selectInputGroup}>
-						<label for="root">Root interval: </label>
-						<select name="root" value={root} onChange={event => {
-							setAwaitingInversion(false);
-							setRoot(Number.parseInt(event.target.value, 10));
-						}}>
-							{rootOptions}
-						</select>
-					</fieldset>
-				</aside>
+					setRoot(newRoot);
+				}} />
+			</aside>
+			<ScalesContext.Provider value={context}>
 				{scales}
 			</ScalesContext.Provider>
 		</main>

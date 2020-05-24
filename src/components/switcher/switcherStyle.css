@@ -1,0 +1,17 @@
+.option {
+	height: 2.5rem;
+	width: 50%;
+	max-width: 11rem;
+	display: inline-block;
+	border-radius: 0;
+}
+
+.option:first-of-type {
+	border-top-left-radius: 0.3rem;
+	border-bottom-left-radius: 0.3rem;
+}
+
+.option:last-of-type {
+	border-top-right-radius: 0.3rem;
+	border-bottom-right-radius: 0.3rem;
+}
