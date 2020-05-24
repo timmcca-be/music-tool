@@ -31,6 +31,7 @@ function Scales({matches: { keyCenter }}) {
 	const [addSeventh, setAddSeventh] = useState(false);
 	const [diatonic, setDiatonic] = useState(true);
 	const [awaitingInversion, setAwaitingInversion] = useState(false);
+	const [root, setRoot] = useState(1);
 
     const formattedKey = formatNote(keyCenter);
     if(typeof window !== 'undefined') {
@@ -42,9 +43,14 @@ function Scales({matches: { keyCenter }}) {
 			if(event.key === '/') {
 				event.preventDefault();
 				setAwaitingInversion(!awaitingInversion);
+				setRoot(1);
 			} else if(awaitingInversion) {
-				// TODO
-			} else {
+				const newRoot = Number.parseInt(event.key, 10);
+				if(!Number.isNaN(newRoot) && newRoot > 0 && newRoot < 8) {
+					setAwaitingInversion(false);
+					setRoot(newRoot);
+				}
+			} else if(event.key === '7') {
 				setAddSeventh(!addSeventh);
 			}
 		};
@@ -93,7 +99,12 @@ function Scales({matches: { keyCenter }}) {
 				startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
 				chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
 				awaitingInversion,
-				resetChordType: () => setAddSeventh(false),
+				root,
+				resetChordType: () => {
+					setAddSeventh(false);
+					setRoot(1);
+					setAwaitingInversion(false);
+				},
 			}}>
 				<button onClick={() => setAddSeventh(!addSeventh)}
 					class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>

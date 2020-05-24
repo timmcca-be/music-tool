@@ -50,24 +50,27 @@ function getAccidentals(semitoneDifference) {
     return accidentals;
 }
 
+function getFullNoteName(scaleTone, semitone) {
+    const scaleToneName = getNote(scaleTone);
+    const accidentals = getAccidentals(semitone % 12 - getSemitone(scaleToneName));
+    return `${scaleToneName}${accidentals}`;
+}
+
 function Chord({ scaleSemitones, scaleTone }) {
     const {
         startingScaleTone,
         chordTones,
         resetChordType,
         awaitingInversion,
+        root,
     } = useContext(ScalesContext);
 
     const baseSemitone = scaleSemitones[scaleTone];
-
-    const scaleToneName = getNote(startingScaleTone + scaleTone);
-    const accidentals = getAccidentals(baseSemitone % 12 - getSemitone(scaleToneName));
 
     const semitonesFromRoot = scaleToneOffset => (
         semitonesBetweenScaleTones(scaleTone, scaleTone + scaleToneOffset, scaleSemitones)
     );
 
-    const chordSemitoneOffsets = chordTones.map(semitonesFromRoot);
     const chordStyle = getChordStyle(semitonesFromRoot(2), semitonesFromRoot(4), semitonesFromRoot(6));
 
     const semitonesFromIonian = (baseSemitone - scaleSemitones[0]) % 12 - getIonianSemitone(scaleTone);
@@ -76,8 +79,18 @@ function Chord({ scaleSemitones, scaleTone }) {
         romanNumeral = romanNumeral.toLowerCase();
     }
 
+    const note = getFullNoteName(startingScaleTone + scaleTone, baseSemitone);
+    const adjustedRoot = (scaleTone + root - 1) % 7;
+    const chordSemitoneOffsets = chordTones.map(semitonesFromRoot);
     const type = getChordType(chordTones, chordSemitoneOffsets);
     const chordSemitones = chordSemitoneOffsets.map(offset => offset + baseSemitone);
+    let inversion;
+    if(root === 1) {
+        inversion = '';
+    } else {
+        inversion = `/${getFullNoteName(startingScaleTone + adjustedRoot, scaleSemitones[adjustedRoot])}`;
+        chordSemitones.push(scaleSemitones[adjustedRoot] - (adjustedRoot > scaleTone ? 12 : 0));
+    }
 
     return (
         <button class={`${style.chordButton} ${style[chordStyle]}`}
@@ -86,7 +99,7 @@ function Chord({ scaleSemitones, scaleTone }) {
                 resetChordType();
                 event.stopPropagation();
             }}>
-            {scaleToneName}{accidentals}{type.literal}{awaitingInversion ? '/' : ''}
+            {note}{type.literal}{awaitingInversion ? '/' : ''}{inversion}
             <small>{romanNumeral}<sup>{type.roman}</sup></small>
         </button>
     );
