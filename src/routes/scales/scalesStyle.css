@@ -1,6 +1,24 @@
+.chordControls {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	background-color: #FAFAFA;
+	padding: 0.4rem;
+	z-index: 1;
+}
+
+.selectInputGroup {
+	border: none;
+	display: inline-block;
+	padding: 0;
+}
+
 .toggle {
-	width: 8rem;
-	margin-top: 1rem;
+	width: 7rem;
+}
+
+.toggle, .selectInputGroup {
+	margin: 0.4rem 0.5rem;
 }
 
 .pill {

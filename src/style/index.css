@@ -18,14 +18,18 @@ html, body {
 	height: 100%;
 }
 
-button {
+button, select {
 	border-color: #cfd6e6;
 	border-width: 1px;
 	border-style: solid;
 	border-radius: 0.3rem;
 	height: 3rem;
 	background-color: #fbfbfc;
-	vertical-align: top;
+	min-width: 4rem;
+}
+
+select {
+	text-align: center;
 }
 
 button:hover {

@@ -81,6 +81,11 @@ function Scales({matches: { keyCenter }}) {
 
 	const startingSemitone = getSemitone(keyCenter);
 
+	const rootOptions = [];
+	for(let i = 1; i <= 7; i++) {
+		rootOptions[i] = <option value={i}>{i}</option>;
+	}
+
 	return (
 		<main onClick={onBackgroundClick}>
 			<h1>Key of {formattedKey}</h1>
@@ -106,11 +111,22 @@ function Scales({matches: { keyCenter }}) {
 					setAwaitingInversion(false);
 				},
 			}}>
-				<button onClick={() => setAddSeventh(!addSeventh)}
-					class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>
-					{addSeventh ? 'Disable' : 'Enable'} 7th
-				</button>
-				{ scales }
+				<aside class={style.chordControls}>
+					<button onClick={() => setAddSeventh(!addSeventh)}
+						class={addSeventh ? `${style.toggle} ${style.toggleOn}` : style.toggle}>
+						{addSeventh ? 'Disable' : 'Enable'} 7th
+					</button>
+					<fieldset class={style.selectInputGroup}>
+						<label for="root">Root interval: </label>
+						<select name="root" value={root} onChange={event => {
+							setAwaitingInversion(false);
+							setRoot(Number.parseInt(event.target.value, 10));
+						}}>
+							{rootOptions}
+						</select>
+					</fieldset>
+				</aside>
+				{scales}
 			</ScalesContext.Provider>
 		</main>
 	)
