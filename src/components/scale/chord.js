@@ -99,7 +99,7 @@ function Chord({ scaleSemitones, scaleTone }) {
                 resetChordType();
                 event.stopPropagation();
             }}>
-            <span>{note}{type.literal}{awaitingInversion ? '/' : ''}{inversion}</span>
+            {note}{type.literal}{awaitingInversion ? '/' : ''}{inversion}
             <small>{romanNumeral}<sup>{type.roman}</sup></small>
         </button>
     );
