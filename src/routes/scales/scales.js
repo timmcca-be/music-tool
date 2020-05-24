@@ -3,7 +3,7 @@ import { useState, useEffect } from 'preact/hooks';
 import style from './style';
 import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
-import { getScaleSemitoneOffsets } from '../../utils/getScaleSemitoneOffsets';
+import { getScaleSemitoneOffsets } from '../../utils/musicUtils';
 import { stopChord } from '../../utils/playChord';
 
 const nonDiatonicScales = [
@@ -48,6 +48,7 @@ function Scales({matches: { keyCenter }}) {
 	});
 
 	const reset = () => setAddSeventh(false);
+	const chordTones = addSeventh ? [0, 2, 4, 6] : [0, 2, 4];
 
 	let scales;
 	if(diatonic) {
@@ -58,7 +59,7 @@ function Scales({matches: { keyCenter }}) {
 				<DiatonicScale key={i}
 					keyCenter={keyCenter}
 					mode={mode}
-					addSeventh={addSeventh}
+					chordTones={chordTones}
 					reset={reset} />
 			);
 		}
@@ -68,7 +69,7 @@ function Scales({matches: { keyCenter }}) {
 				keyCenter={keyCenter}
 				name={scale.name}
 				semitoneOffsets={scale.semitoneOffsets}
-				addSeventh={addSeventh}
+				chordTones={chordTones}
 				reset={reset} />
 		));
 	}
