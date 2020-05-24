@@ -14,10 +14,12 @@ function Scale({ name, semitoneOffsets }) {
     }
 
 	return (
-		<section class={style.scale}>
+		<article class={style.scale}>
             <h3 class={style.modeTitle}>{name}</h3>
-            {chords}
-        </section>
+            <section class={style.chords}>
+                {chords}
+            </section>
+        </article>
 	);
 }
 

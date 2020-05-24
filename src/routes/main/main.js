@@ -13,9 +13,9 @@ const Main = () => {
 		<main>
 			<h1>Keys</h1>
 			<p>Select a key to view its modes</p>
-			<article class={style.circle}>
+			<nav class={style.keys}>
 				{ notes.map(note => <Link class={style.link} href={`/scales/${note}`}>{note.replace('s', '♯').replace('b', '♭')}</Link>) }
-			</article>
+			</nav>
 		</main>
 	);
 };

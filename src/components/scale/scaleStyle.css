@@ -2,8 +2,18 @@
 	padding: 1.6rem 0.2rem 0 0.2rem;
 }
 
+.chords {
+	display: inline-flex;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: center;
+	max-width: 52rem;
+	vertical-align: middle;
+}
+
 .modeTitle {
 	margin: 0 0 0.5rem 0;
+	vertical-align: middle;
 }
 
 .chordButton small {
@@ -50,7 +60,6 @@
 @media only screen and (min-width: 800px) {
 	.chordButton {
 		width: calc(100% / 7 - 6px);
-		max-width: 7rem;
 	}
 }
 
@@ -62,14 +71,11 @@
 
 	.modeTitle, .scale:after {
 		display: inline-block;
-		width: calc(200% / 11 - 6px);
-		max-width: 14rem;
-		margin: 0 3px;
+		width: 10rem;
 	}
 
-	.chordButton {
-		width: calc(100% / 11 - 6px);
-		max-width: 7rem;
+	.modeTitle {
+		margin: 0;
 	}
 }
 
