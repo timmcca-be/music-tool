@@ -9,8 +9,6 @@ import style from './chordStyle';
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const MINOR_CHORD_TYPES = ['half-diminished', 'diminished', 'minor'];
 
-const getIonianSemitone = scaleTone => scaleTone * 2 - (scaleTone > 2 ? 1 : 0);
-
 const roundTowardZero = num => num | 0;
 
 function semitonesBetweenScaleTones(start, end, semitones) {
@@ -50,6 +48,10 @@ function getAccidentals(semitoneDifference) {
     return accidentals;
 }
 
+const getIonianSemitone = scaleTone => (scaleTone % 7) * 2 - ((scaleTone % 7) > 2 ? 1 : 0);
+
+const getAccidentalsFromIonian = (scaleTone, semitone) => getAccidentals(semitone % 12 - getIonianSemitone(scaleTone));
+
 function getFullNoteName(scaleTone, semitone) {
     const scaleToneName = getNote(scaleTone);
     const accidentals = getAccidentals(semitone % 12 - getSemitone(scaleToneName));
@@ -73,10 +75,19 @@ function Chord({ scaleSemitones, scaleTone, relativeRoot = 0 }) {
 
     const chordStyle = getChordStyle(semitonesFromRoot(2), semitonesFromRoot(4), semitonesFromRoot(6));
 
-    const semitonesFromIonian = (baseSemitone - scaleSemitones[0]) % 12 - getIonianSemitone(scaleTone);
-    let romanNumeral = `${getAccidentals(semitonesFromIonian)}${ROMAN_NUMERALS[scaleTone]}`;
+    const accidentalsFromIonian = getAccidentalsFromIonian(scaleTone, baseSemitone - scaleSemitones[0]);
+    let romanNumeral = `${accidentalsFromIonian}${ROMAN_NUMERALS[scaleTone]}`;
     if(MINOR_CHORD_TYPES.indexOf(chordStyle) !== -1) {
         romanNumeral = romanNumeral.toLowerCase();
+    }
+    let relativeRootRomanNumeral;
+    if(relativeRoot === 0) {
+        relativeRootRomanNumeral = '';
+    } else {
+        const relativeRootSemitone = baseSemitone - getIonianSemitone(scaleTone + startingScaleTone);
+        relativeRootRomanNumeral = `/${
+            getAccidentalsFromIonian(relativeRoot, relativeRootSemitone)
+        }${ROMAN_NUMERALS[relativeRoot]}`
     }
 
     const note = getFullNoteName(startingScaleTone + relativeRoot + scaleTone, baseSemitone);
@@ -99,8 +110,8 @@ function Chord({ scaleSemitones, scaleTone, relativeRoot = 0 }) {
                 resetChordType();
                 event.stopPropagation();
             }}>
-            {note}{type.literal}{awaitingRoot ? '/' : ''}{inversion}
-            <small>{romanNumeral}<sup>{type.roman}</sup>{relativeRoot === 0 ? '' : `/${ROMAN_NUMERALS[relativeRoot]}`}</small>
+            {note}{type.literal}{awaitingRoot ? '/' : inversion}
+            <small>{romanNumeral}<sup>{type.roman}</sup>{relativeRootRomanNumeral}</small>
         </button>
     );
 }
