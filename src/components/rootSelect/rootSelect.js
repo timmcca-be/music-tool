@@ -27,7 +27,7 @@ function RootSelect({ awaitingRoot, setAwaitingRoot, root, setRoot }) {
             <select name="select" value={root} onChange={event => {
                 setRoot(Number.parseInt(event.target.value, 10));
                 setAwaitingRoot(false);
-            }}>
+            }} title="Root interval - press / and then the numeric key to select">
                 {options}
             </select>
         </>

@@ -11,6 +11,7 @@ function Toggle({ name, mobileName, enabled, setEnabled, keyboardShortcut, allow
     
     return (
         <button onClick={() => setEnabled(!enabled)}
+            title={`${name[0].toUpperCase()}${name.substring(1)} - press ${keyboardShortcut} to toggle`}
             class={enabled ? `${style.toggle} ${style.enabled}` : style.toggle}>
             <span class={style.desktop}>{enabled ? 'Disable' : 'Enable'} {name}</span>
             <span class={style.mobile}>{mobileName === undefined ? name : mobileName}</span>
