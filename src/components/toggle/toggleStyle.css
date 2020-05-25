@@ -10,8 +10,27 @@
 }
 
 .toggle {
-	width: 7rem;
-	margin-right: 1rem;
+	width: 4rem;
+	margin-right: 0.5rem;
+}
+
+.desktop {
+	display: none;
+}
+
+@media only screen and (min-width: 600px) {
+	.toggle {
+		width: 9rem;
+		margin-right: 1rem;
+	}
+
+	.mobile {
+		display: none;
+	}
+
+	.desktop {
+		display: inline;
+	}
 }
 
 .option {

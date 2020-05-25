@@ -2,7 +2,7 @@ import { h } from 'preact';
 import useKeyDown from '../../hooks/useKeyDown';
 import style from './toggleStyle';
 
-function Toggle({ name, enabled, setEnabled, keyboardShortcut, allowKeyboardShortcut = true }) {
+function Toggle({ name, mobileName, enabled, setEnabled, keyboardShortcut, allowKeyboardShortcut = true }) {
     useKeyDown(key => {
 		if(allowKeyboardShortcut && key === keyboardShortcut) {
 			setEnabled(!enabled);
@@ -12,7 +12,8 @@ function Toggle({ name, enabled, setEnabled, keyboardShortcut, allowKeyboardShor
     return (
         <button onClick={() => setEnabled(!enabled)}
             class={enabled ? `${style.toggle} ${style.enabled}` : style.toggle}>
-            {enabled ? 'Disable' : 'Enable'} {name}
+            <span class={style.desktop}>{enabled ? 'Disable' : 'Enable'} {name}</span>
+            <span class={style.mobile}>{mobileName === undefined ? name : mobileName}</span>
         </button>
     );
 }

@@ -47,14 +47,3 @@ button::-moz-focus-inner {
 main {
 	text-align: center;
 }
-
-.enabled {
-	border-color: #0678c4;
-	background-color: #f2f8fc;
-	font-weight: bold;
-	color: #0678c4; 
-}
-
-.enabled:hover {
-	background-color: #f9fcfd;
-}
