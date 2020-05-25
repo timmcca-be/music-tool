@@ -1,13 +1,14 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
-import style from './scalesStyle';
+import { useState } from 'preact/hooks';
 import ScalesContext from '../../context/scalesContext';
 import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
 import { getScaleSemitoneOffsets, getScaleTone, getSemitone } from '../../utils/musicUtils';
 import { stopChord } from '../../utils/playChord';
 import Switcher from '../../components/switcher/switcher';
-import RangeSelect from '../../components/rangeSelect/rangeSelect';
+import RootSelect from '../../components/rootSelect/rootSelect';
+import style from './scalesStyle';
+import SeventhToggle from '../../components/seventhToggle/seventhToggle';
 
 const NON_DIATONIC_SCALE_TYPES = [
 	{
@@ -30,49 +31,27 @@ function formatNote(note) {
 }
 
 function Scales({matches: { keyCenter }}) {
-	const [addSeventh, setAddSeventh] = useState(false);
+	const [seventhEnabled, setSeventhEnabled] = useState(false);
 	const [diatonic, setDiatonic] = useState(true);
-	const [awaitingInversion, setAwaitingInversion] = useState(false);
-	const [root, setRoot] = useState(1);
+	const [awaitingRoot, setAwaitingRoot] = useState(false);
+	const [root, setRoot] = useState(0);
 
     const formattedKey = formatNote(keyCenter);
     if(typeof window !== 'undefined') {
         document.title = `Key of ${formattedKey}`;
 	}
 
-	useEffect(() => {
-		const keyDown = event => {
-			if(event.key === '/') {
-				event.preventDefault();
-				setAwaitingInversion(!awaitingInversion);
-				setRoot(1);
-			} else if(awaitingInversion) {
-				const newRoot = Number.parseInt(event.key, 10);
-				if(!Number.isNaN(newRoot) && newRoot > 0 && newRoot < 8) {
-					setAwaitingInversion(false);
-					setRoot(newRoot);
-				}
-			} else if(event.key === '7') {
-				setAddSeventh(!addSeventh);
-			}
-		};
-		document.addEventListener('keydown', keyDown);
-		return () => {
-			document.removeEventListener('keydown', keyDown);
-		}
-	});
-
 	const startingSemitone = getSemitone(keyCenter);
 	const context = {
 		startingScaleTone: getScaleTone(keyCenter),
 		startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
-		chordTones: addSeventh ? [0, 2, 4, 6] : [0, 2, 4],
-		awaitingInversion,
+		chordTones: seventhEnabled ? [0, 2, 4, 6] : [0, 2, 4],
+		awaitingRoot,
 		root,
 		resetChordType: () => {
-			setAddSeventh(false);
-			setRoot(1);
-			setAwaitingInversion(false);
+			setSeventhEnabled(false);
+			setRoot(0);
+			setAwaitingRoot(false);
 		},
 	};
 
@@ -89,11 +68,6 @@ function Scales({matches: { keyCenter }}) {
 		));
 	}
 
-	const rootOptions = [];
-	for(let i = 1; i <= 7; i++) {
-		rootOptions[i] = <option value={i}>{i}</option>;
-	}
-
 	return (
 		<main onClick={event => {
 			if(event.target.tagName !== 'BUTTON') {
@@ -102,25 +76,19 @@ function Scales({matches: { keyCenter }}) {
 		}}>
 			<h1>Key of {formattedKey}</h1>
 			<Switcher value={diatonic} setValue={setDiatonic}
-				items={{
-					'Diatonic scales': true,
-					'Non-diatonic scales': false,
-				}} />
-			<aside class={style.chordControls}>
-				<button onClick={() => setAddSeventh(!addSeventh)}
-					class={addSeventh ? `${style.toggle} enabled` : style.toggle}>
-					{addSeventh ? 'Disable' : 'Enable'} 7th
-				</button>
-				<RangeSelect label="Root interval" max={7} value={root} setValue={newRoot => {
-					setAwaitingInversion(false);
-					setRoot(newRoot);
-				}} />
-			</aside>
+				items={[
+					{ name: 'Diatonic scales', value: true},
+					{ name: 'Non-diatonic scales', value: false },
+				]} />
 			<ScalesContext.Provider value={context}>
+				<aside class={style.chordControls}>
+					<SeventhToggle setSeventhEnabled={setSeventhEnabled} />
+					<RootSelect setAwaitingRoot={setAwaitingRoot} setRoot={setRoot} />
+				</aside>
 				{scales}
 			</ScalesContext.Provider>
 		</main>
-	)
+	);
 }
 
 export default Scales;

@@ -61,7 +61,7 @@ function Chord({ scaleSemitones, scaleTone }) {
         startingScaleTone,
         chordTones,
         resetChordType,
-        awaitingInversion,
+        awaitingRoot,
         root,
     } = useContext(ScalesContext);
 
@@ -80,12 +80,12 @@ function Chord({ scaleSemitones, scaleTone }) {
     }
 
     const note = getFullNoteName(startingScaleTone + scaleTone, baseSemitone);
-    const adjustedRoot = (scaleTone + root - 1) % 7;
+    const adjustedRoot = (scaleTone + root) % 7;
     const chordSemitoneOffsets = chordTones.map(semitonesFromRoot);
     const type = getChordType(chordTones, chordSemitoneOffsets);
     const chordSemitones = chordSemitoneOffsets.map(offset => offset + baseSemitone);
     let inversion;
-    if(root === 1) {
+    if(root === 0) {
         inversion = '';
     } else {
         inversion = `/${getFullNoteName(startingScaleTone + adjustedRoot, scaleSemitones[adjustedRoot])}`;
@@ -99,7 +99,7 @@ function Chord({ scaleSemitones, scaleTone }) {
                 resetChordType();
                 event.stopPropagation();
             }}>
-            {note}{type.literal}{awaitingInversion ? '/' : ''}{inversion}
+            {note}{type.literal}{awaitingRoot ? '/' : ''}{inversion}
             <small>{romanNumeral}<sup>{type.roman}</sup></small>
         </button>
     );
