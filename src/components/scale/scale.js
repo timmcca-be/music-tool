@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useContext } from 'preact/hooks';
 import ScalesContext from '../../context/scalesContext';
-import Chord from './chord';
+import Chord from '../chord/chord';
 import style from './scaleStyle';
 
 function Scale({ name, semitoneOffsets }) {

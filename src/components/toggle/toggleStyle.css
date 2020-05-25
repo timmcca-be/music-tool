@@ -1,3 +1,19 @@
+.enabled {
+	border-color: #0678c4;
+	background-color: #f2f8fc;
+	font-weight: bold;
+	color: #0678c4; 
+}
+
+.enabled:hover {
+	background-color: #f9fcfd;
+}
+
+.toggle {
+	width: 7rem;
+	margin-right: 1rem;
+}
+
 .option {
 	height: 2.5rem;
 	width: 50%;

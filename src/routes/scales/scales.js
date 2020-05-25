@@ -5,10 +5,10 @@ import Scale from '../../components/scale/scale';
 import DiatonicScale from '../../components/scale/diatonicScale';
 import { getScaleSemitoneOffsets, getScaleTone, getSemitone } from '../../utils/musicUtils';
 import { stopChord } from '../../utils/playChord';
-import Switcher from '../../components/switcher/switcher';
+import Switcher from '../../components/toggle/switcher';
 import RootSelect from '../../components/rootSelect/rootSelect';
 import style from './scalesStyle';
-import SeventhToggle from '../../components/seventhToggle/seventhToggle';
+import Toggle from '../../components/toggle/toggle';
 
 const NON_DIATONIC_SCALE_TYPES = [
 	{
@@ -50,8 +50,8 @@ function Scales({matches: { keyCenter }}) {
 		root,
 		resetChordType: () => {
 			setSeventhEnabled(false);
-			setRoot(0);
 			setAwaitingRoot(false);
+			setRoot(0);
 		},
 	};
 
@@ -81,8 +81,8 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
 			<aside class={style.chordControls}>
-				<SeventhToggle awaitingRoot={awaitingRoot}
-					seventhEnabled={seventhEnabled} setSeventhEnabled={setSeventhEnabled} />
+				<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
+					enabled={seventhEnabled} setEnabled={setSeventhEnabled} />
 				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
 					root={root} setRoot={setRoot} />
 			</aside>

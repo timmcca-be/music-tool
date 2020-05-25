@@ -28,6 +28,10 @@ button, select {
 	min-width: 4rem;
 }
 
+button {
+	vertical-align: top;
+}
+
 select {
 	text-align: center;
 }
