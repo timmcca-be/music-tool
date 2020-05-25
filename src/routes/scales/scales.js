@@ -80,11 +80,13 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Diatonic scales', value: true},
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
+			<aside class={style.chordControls}>
+				<SeventhToggle awaitingRoot={awaitingRoot}
+					seventhEnabled={seventhEnabled} setSeventhEnabled={setSeventhEnabled} />
+				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
+					root={root} setRoot={setRoot} />
+			</aside>
 			<ScalesContext.Provider value={context}>
-				<aside class={style.chordControls}>
-					<SeventhToggle setSeventhEnabled={setSeventhEnabled} />
-					<RootSelect setAwaitingRoot={setAwaitingRoot} setRoot={setRoot} />
-				</aside>
 				{scales}
 			</ScalesContext.Provider>
 		</main>

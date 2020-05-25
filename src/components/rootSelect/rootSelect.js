@@ -1,13 +1,7 @@
 import { h } from 'preact';
-import { useContext } from 'preact/hooks';
 import useKeyDown from '../../hooks/useKeyDown';
-import ScalesContext from '../../context/scalesContext';
 
-function RootSelect({ setAwaitingRoot, setRoot }) {
-    const {
-        awaitingRoot,
-        root,
-    } = useContext(ScalesContext);
+function RootSelect({ awaitingRoot, setAwaitingRoot, root, setRoot }) {
     useKeyDown((key, event) => {
         if(key === '/') {
             event.preventDefault();

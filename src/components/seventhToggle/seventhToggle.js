@@ -1,13 +1,8 @@
 import { h } from 'preact';
-import { useContext } from 'preact/hooks';
 import useKeyDown from '../../hooks/useKeyDown';
-import ScalesContext from '../../context/scalesContext';
 import style from './seventhToggleStyle';
 
-function SeventhToggle({ setSeventhEnabled }) {
-    const { chordTones, awaitingRoot } = useContext(ScalesContext);
-    const seventhEnabled = chordTones[3] === 6;
-
+function SeventhToggle({ seventhEnabled, setSeventhEnabled, awaitingRoot }) {
     useKeyDown(key => {
 		if(!awaitingRoot && key === '7') {
 			setSeventhEnabled(!seventhEnabled);
