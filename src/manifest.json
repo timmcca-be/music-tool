@@ -1,9 +1,9 @@
 {
-  "name": "music-tool",
-  "short_name": "music-tool",
+  "name": "Chord Scales",
+  "short_name": "Chords",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#fff",
-  "theme_color": "#673ab8"
+  "orientation": "any",
+  "background_color": "#fafafa",
+  "theme_color": "#903ab8"
 }

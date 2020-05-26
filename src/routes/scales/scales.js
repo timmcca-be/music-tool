@@ -38,9 +38,9 @@ function Scales({matches: { keyCenter }}) {
 	const [secondaryDominantsEnabled, setSecondaryDominantsEnabled] = useState(false);
 	const [root, setRoot] = useState(0);
 
-    const formattedKey = formatNote(keyCenter);
+	const title = `${formatNote(keyCenter)} Scales`;
     if(typeof window !== 'undefined') {
-        document.title = `Key of ${formattedKey}`;
+        document.title = title;
 	}
 
 	const startingSemitone = getSemitone(keyCenter);
@@ -72,7 +72,7 @@ function Scales({matches: { keyCenter }}) {
 				stopChord();
 			}
 		}}>
-			<h1>Key of {formattedKey}</h1>
+			<h1>{title}</h1>
 			<Switcher value={diatonic} setValue={setDiatonic}
 				items={[
 					{ name: 'Diatonic scales', value: true},
