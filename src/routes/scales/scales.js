@@ -9,6 +9,7 @@ import Switcher from '../../components/toggle/switcher';
 import RootSelect from '../../components/rootSelect/rootSelect';
 import style from './scalesStyle';
 import Toggle from '../../components/toggle/toggle';
+import ResetButton from '../../components/resetButton/resetButton';
 
 const NON_DIATONIC_SCALE_TYPES = [
 	{
@@ -50,12 +51,6 @@ function Scales({matches: { keyCenter }}) {
 		awaitingRoot,
 		secondaryDominantsEnabled,
 		root,
-		resetChordType: () => {
-			setSeventhEnabled(false);
-			setAwaitingRoot(false);
-			setSecondaryDominantsEnabled(false);
-			setRoot(0);
-		},
 	};
 
 	let scales;
@@ -90,6 +85,12 @@ function Scales({matches: { keyCenter }}) {
 					enabled={seventhEnabled} setEnabled={setSeventhEnabled} />
 				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
 					root={root} setRoot={setRoot} />
+				<ResetButton resetChordType={() => {
+					setSeventhEnabled(false);
+					setAwaitingRoot(false);
+					setSecondaryDominantsEnabled(false);
+					setRoot(0);
+				}} />
 			</aside>
 			<ScalesContext.Provider value={context}>
 				{scales}

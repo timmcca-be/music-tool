@@ -65,7 +65,6 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0 }) {
         startingScaleTone,
         startingSemitone,
         chordTones,
-        resetChordType,
         awaitingRoot,
         root,
     } = useContext(ScalesContext);
@@ -109,7 +108,6 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0 }) {
         <button class={`${style.chordButton} ${style[chordStyle]}`}
             onClick={event => {
                 playChord(chordSemitones);
-                resetChordType();
                 event.stopPropagation();
             }}>
             {note}{type.literal}{awaitingRoot ? '/' : inversion}

@@ -47,3 +47,17 @@ button::-moz-focus-inner {
 main {
 	text-align: center;
 }
+
+.desktop {
+	display: none;
+}
+
+@media only screen and (min-width: 600px) {
+    .mobile {
+		display: none;
+	}
+
+	.desktop {
+		display: inline;
+    }
+}
