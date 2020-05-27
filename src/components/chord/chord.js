@@ -106,10 +106,7 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0 }) {
 
     return (
         <button class={`${style.chordButton} ${style[chordStyle]}`}
-            onClick={event => {
-                playChord(chordSemitones);
-                event.stopPropagation();
-            }}>
+            onClick={() => playChord(chordSemitones)}>
             {note}{type.literal}{awaitingRoot ? '/' : inversion}
             <small>{romanNumeral}<sup>{type.roman}</sup>{relativeTonicRomanNumeral}</small>
         </button>

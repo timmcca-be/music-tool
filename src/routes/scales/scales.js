@@ -11,6 +11,11 @@ import style from './scalesStyle';
 import Toggle from '../../components/toggle/toggle';
 import ResetButton from '../../components/resetButton/resetButton';
 
+const BACKGROUND_TAG_NAMES = ['MAIN', 'DIV', 'ARTICLE', 'SECTION', 'ASIDE'];
+for(let i = 1; i <= 6; i++) {
+	BACKGROUND_TAG_NAMES.push(`H${i}`);
+}
+
 const NON_DIATONIC_SCALE_TYPES = [
 	{
 		name: 'Harmonic Minor',
@@ -68,7 +73,7 @@ function Scales({matches: { keyCenter }}) {
 
 	return (
 		<main onClick={event => {
-			if(event.target.tagName !== 'BUTTON') {
+			if(BACKGROUND_TAG_NAMES.indexOf(event.target.tagName) !== -1) {
 				stopChord();
 			}
 		}}>

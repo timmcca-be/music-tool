@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+.select {
+    margin-left: 0.2rem;
+}
+
 @media only screen and (min-width: 600px) {
     .container {
         margin-left: 0;
