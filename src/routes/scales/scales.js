@@ -10,6 +10,7 @@ import RootSelect from '../../components/rootSelect/rootSelect';
 import style from './scalesStyle';
 import Toggle from '../../components/toggle/toggle';
 import ResetButton from '../../components/resetButton/resetButton';
+import DroneToggle from '../../components/toggle/droneToggle';
 
 const BACKGROUND_TAG_NAMES = ['MAIN', 'DIV', 'ARTICLE', 'SECTION', 'ASIDE'];
 for(let i = 1; i <= 6; i++) {
@@ -43,7 +44,8 @@ function Scales({matches: { keyCenter }}) {
 	const [secondaryDominantsEnabled, setSecondaryDominantsEnabled] = useState(false);
 	const [root, setRoot] = useState(0);
 
-	const title = `${formatNote(keyCenter)} Scales`;
+	const formattedKey = formatNote(keyCenter);
+	const title = `${formattedKey} Scales`;
     if(typeof window !== 'undefined') {
         document.title = title;
 	}
@@ -84,10 +86,15 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
 			<aside class={style.chordControls}>
-				<Toggle name="secondary dominants" mobileName="V/x" keyboardShortcut="s"
-					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled} />
+				<DroneToggle note={formattedKey} semitone={startingSemitone} />
+				<Toggle name="Secondary dominants" keyboardShortcut="s"
+					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
+					<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
+				</Toggle>
 				<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
-					enabled={seventhEnabled} setEnabled={setSeventhEnabled} />
+					enabled={seventhEnabled} setEnabled={setSeventhEnabled}>
+					7th
+				</Toggle>
 				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
 					root={root} setRoot={setRoot} />
 				<ResetButton resetChordType={() => {

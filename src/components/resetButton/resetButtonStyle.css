@@ -3,13 +3,9 @@
     font-size: 1.5rem;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 650px) {
     .button {
-        margin-left: 1rem;
-        font-size: 1.5rem;
-    }
-
-    .button {
+        margin-left: 0.8%;
         font-size: unset;
     }
 }

@@ -9,7 +9,7 @@
 	justify-content: space-between;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 650px) {
 	.chordControls {
 		display: block;
 		padding: 0.8rem 0;
@@ -20,4 +20,8 @@
 	border: none;
 	display: inline-block;
 	padding: 0;
+}
+
+.romanNumeral {
+	font-family: 'Times New Roman', Times, serif;
 }

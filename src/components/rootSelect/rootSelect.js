@@ -24,7 +24,7 @@ function RootSelect({ awaitingRoot, setAwaitingRoot, root, setRoot }) {
     
     return (
         <label class={style.container}>
-            Root<span class="desktop"> interval</span>:
+            Root:
             <select class={style.select} value={root} onChange={event => {
                 setRoot(Number.parseInt(event.target.value, 10));
                 setAwaitingRoot(false);
