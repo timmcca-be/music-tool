@@ -23,15 +23,15 @@ function RootSelect({ awaitingRoot, setAwaitingRoot, root, setRoot }) {
     }
     
     return (
-        <>
-            <label for="select" class={style.label}>Root<span class="desktop"> interval</span>: </label>
+        <fieldset class={style.container}>
+            <label for="select">Root<span class="desktop"> interval</span>: </label>
             <select name="select" value={root} onChange={event => {
                 setRoot(Number.parseInt(event.target.value, 10));
                 setAwaitingRoot(false);
             }} title="Root interval - press / and then the numeric key to select">
                 {options}
             </select>
-        </>
+        </fieldset>
     )
 }
 
