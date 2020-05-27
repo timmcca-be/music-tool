@@ -19,10 +19,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Build
+    - name: Set up Node.js
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - run: npm ci
     - run: npm run build
 
