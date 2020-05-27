@@ -5,5 +5,12 @@
   "display": "standalone",
   "orientation": "any",
   "background_color": "#fafafa",
-  "theme_color": "#8900d3"
+  "theme_color": "#8900d3",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "purpose": "maskable"
+    }
+  ]
 }
