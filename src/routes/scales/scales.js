@@ -30,6 +30,9 @@ const NON_DIATONIC_SCALE_TYPES = [
 	}, {
 		name: 'Melodic Major',
 		semitoneOffsets: getScaleSemitoneOffsets(2, 4),
+	}, {
+		name: 'Altered',
+		semitoneOffsets: getScaleSemitoneOffsets(0, 2),
 	}
 ];
 
@@ -42,6 +45,7 @@ function Scales({matches: { keyCenter }}) {
 	const [diatonic, setDiatonic] = useState(true);
 	const [awaitingRoot, setAwaitingRoot] = useState(false);
 	const [secondaryDominantsEnabled, setSecondaryDominantsEnabled] = useState(false);
+	const [tritoneSubstitutionsEnabled, setTritoneSubstitutionsEnabled] = useState(false);
 	const [root, setRoot] = useState(0);
 
 	const formattedKey = formatNote(keyCenter);
@@ -57,6 +61,7 @@ function Scales({matches: { keyCenter }}) {
 		chordTones: seventhEnabled ? [0, 2, 4, 6] : [0, 2, 4],
 		awaitingRoot,
 		secondaryDominantsEnabled,
+		tritoneSubstitutionsEnabled,
 		root,
 	};
 
@@ -90,6 +95,10 @@ function Scales({matches: { keyCenter }}) {
 				<Toggle name="Secondary dominants" keyboardShortcut="s"
 					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
 					<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
+				</Toggle>
+				<Toggle name="Tritone subtitutions" keyboardShortcut="t"
+					enabled={tritoneSubstitutionsEnabled} setEnabled={setTritoneSubstitutionsEnabled}>
+					<span class="desktop">tritone substitutions</span><span class={`mobile ${style.romanNumeral}`}>♭V/x</span>
 				</Toggle>
 				<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
 					enabled={seventhEnabled} setEnabled={setSeventhEnabled}>

@@ -6,7 +6,10 @@ import style from './scaleStyle';
 import SecondaryDominantChord from '../chord/secondaryDominantChord';
 
 function Scale({ name, semitoneOffsets }) {
-    const { startingSemitone, secondaryDominantsEnabled } = useContext(ScalesContext);
+    const {
+        startingSemitone,
+        secondaryDominantsEnabled,
+    } = useContext(ScalesContext);
     const semitones = semitoneOffsets.map(offset => startingSemitone + offset);
 
     const chords = [];

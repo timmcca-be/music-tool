@@ -7,7 +7,7 @@ function ResetButton({ resetChordType }) {
 		if(key === 'r') {
             resetChordType();
 		}
-	});
+	}, [resetChordType]);
     
     return (
         <button onClick={resetChordType}

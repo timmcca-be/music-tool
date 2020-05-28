@@ -6,10 +6,11 @@ const IONIAN_SEMITONE_OFFSETS = getScaleSemitoneOffsets(2, 6);
 
 function SecondaryDominantChord({ scaleSemitones, scaleTone }) {
     const chordStartingSemitone = scaleSemitones[scaleTone];
+    const ionianSemitones = IONIAN_SEMITONE_OFFSETS.map(offset => offset + chordStartingSemitone);
 
     return (
-        <Chord scaleTone={4} relativeTonic={scaleTone}
-            scaleSemitones={IONIAN_SEMITONE_OFFSETS.map(offset => offset + chordStartingSemitone)} />
+        <Chord scaleTone={4} relativeTonic={scaleTone} relativeTonicSemitone={ionianSemitones[0] - scaleSemitones[0]}
+            scaleSemitones={ionianSemitones} />
     );
 }
 
