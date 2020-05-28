@@ -7,7 +7,7 @@ function substituteChord(ChordComponent, substituteScaleSemitoneOffsets, substit
         return (
             <ChordComponent scaleTone={substituteScaleStartingTone} scaleSemitones={substituteScaleSemitones}
                 relativeTonic={(scaleTone + relativeTonic) % 7}
-                relativeTonicSemitone={(substituteScaleSemitones[0] - scaleSemitones[0] + relativeTonicSemitone) % 12} />
+                relativeTonicSemitone={(chordStartingSemitone - scaleSemitones[0] + relativeTonicSemitone) % 12} />
         );
     };
 }
