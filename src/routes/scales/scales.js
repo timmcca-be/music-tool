@@ -95,6 +95,7 @@ function Scales({matches: { keyCenter }}) {
 					setSeventhEnabled(false);
 					setAwaitingRoot(false);
 					setSecondaryDominantsEnabled(false);
+					setTritoneSubstitutionsEnabled(false);
 					setRoot(0);
 				}} />
 				<Toggle name="Secondary dominants" keyboardShortcut="s"
