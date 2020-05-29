@@ -3,8 +3,6 @@ name: Node.js GitHub Pages Deployment
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
