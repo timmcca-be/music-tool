@@ -7,7 +7,7 @@ function Toggle({ name, children, enabled, setEnabled, keyboardShortcut, allowKe
 		if(allowKeyboardShortcut && key === keyboardShortcut) {
 			setEnabled(!enabled);
 		}
-	});
+	}, [enabled, setEnabled, allowKeyboardShortcut, keyboardShortcut]);
     
     return (
         <button onClick={() => setEnabled(!enabled)}

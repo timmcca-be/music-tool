@@ -15,7 +15,7 @@ function RootSelect({ awaitingRoot, setAwaitingRoot, root, setRoot }) {
                 setRoot(newRoot);
             }
         }
-    });
+    }, [awaitingRoot, setAwaitingRoot, root, setRoot]);
 
     const options = [];
 	for(let i = 0; i < 7; i++) {

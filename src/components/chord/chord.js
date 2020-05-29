@@ -50,7 +50,7 @@ function getAccidentals(semitoneDifference) {
 
 const getIonianSemitone = scaleTone => (scaleTone % 7) * 2 - ((scaleTone % 7) > 2 ? 1 : 0);
 
-function getAccidentalsFromIonian(scaleTone, semitone, tonicSemitone) {
+function getAccidentalsFromIonian(scaleTone, semitone, tonicSemitone = 0) {
     return getAccidentals((semitone - tonicSemitone) % 12 - getIonianSemitone(scaleTone));
 }
 
@@ -60,10 +60,9 @@ function getFullNoteName(scaleTone, semitone) {
     return `${scaleToneName}${accidentals}`;
 }
 
-function Chord({ scaleSemitones, scaleTone, relativeTonic = 0 }) {
+function Chord({ scaleSemitones, scaleTone, relativeTonic = 0, relativeTonicSemitone = 0 }) {
     const {
         startingScaleTone,
-        startingSemitone,
         chordTones,
         awaitingRoot,
         root,
@@ -83,11 +82,11 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0 }) {
         romanNumeral = romanNumeral.toLowerCase();
     }
     let relativeTonicRomanNumeral;
-    if(relativeTonic === 0) {
+    if(relativeTonic === 0 && relativeTonicSemitone === 0) {
         relativeTonicRomanNumeral = '';
     } else {
         relativeTonicRomanNumeral = `/${
-            getAccidentalsFromIonian(relativeTonic, scaleSemitones[0], startingSemitone)
+            getAccidentalsFromIonian(relativeTonic, relativeTonicSemitone)
         }${ROMAN_NUMERALS[relativeTonic]}`
     }
 

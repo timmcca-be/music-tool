@@ -11,6 +11,7 @@ import style from './scalesStyle';
 import Toggle from '../../components/toggle/toggle';
 import ResetButton from '../../components/resetButton/resetButton';
 import DroneToggle from '../../components/toggle/droneToggle';
+import getChordComponent from '../../components/chord/getChordComponent';
 
 const BACKGROUND_TAG_NAMES = ['MAIN', 'DIV', 'ARTICLE', 'SECTION', 'ASIDE'];
 for(let i = 1; i <= 6; i++) {
@@ -30,6 +31,9 @@ const NON_DIATONIC_SCALE_TYPES = [
 	}, {
 		name: 'Melodic Major',
 		semitoneOffsets: getScaleSemitoneOffsets(2, 4),
+	}, {
+		name: 'Altered',
+		semitoneOffsets: getScaleSemitoneOffsets(0, 2),
 	}
 ];
 
@@ -42,6 +46,7 @@ function Scales({matches: { keyCenter }}) {
 	const [diatonic, setDiatonic] = useState(true);
 	const [awaitingRoot, setAwaitingRoot] = useState(false);
 	const [secondaryDominantsEnabled, setSecondaryDominantsEnabled] = useState(false);
+	const [tritoneSubstitutionsEnabled, setTritoneSubstitutionsEnabled] = useState(false);
 	const [root, setRoot] = useState(0);
 
 	const formattedKey = formatNote(keyCenter);
@@ -55,8 +60,8 @@ function Scales({matches: { keyCenter }}) {
 		startingScaleTone: getScaleTone(keyCenter),
 		startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
 		chordTones: seventhEnabled ? [0, 2, 4, 6] : [0, 2, 4],
+		ChordComponent: getChordComponent(secondaryDominantsEnabled, tritoneSubstitutionsEnabled),
 		awaitingRoot,
-		secondaryDominantsEnabled,
 		root,
 	};
 
@@ -86,10 +91,19 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
 			<aside class={style.chordControls}>
-				<DroneToggle note={formattedKey} semitone={startingSemitone} />
+				<ResetButton resetChordType={() => {
+					setSeventhEnabled(false);
+					setAwaitingRoot(false);
+					setSecondaryDominantsEnabled(false);
+					setRoot(0);
+				}} />
 				<Toggle name="Secondary dominants" keyboardShortcut="s"
 					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
 					<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
+				</Toggle>
+				<Toggle name="Tritone subtitutions" keyboardShortcut="t"
+					enabled={tritoneSubstitutionsEnabled} setEnabled={setTritoneSubstitutionsEnabled}>
+					<span class="desktop">tritone substitutions</span><span class={`mobile ${style.romanNumeral}`}>♭V/x</span>
 				</Toggle>
 				<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
 					enabled={seventhEnabled} setEnabled={setSeventhEnabled}>
@@ -97,12 +111,7 @@ function Scales({matches: { keyCenter }}) {
 				</Toggle>
 				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
 					root={root} setRoot={setRoot} />
-				<ResetButton resetChordType={() => {
-					setSeventhEnabled(false);
-					setAwaitingRoot(false);
-					setSecondaryDominantsEnabled(false);
-					setRoot(0);
-				}} />
+				<DroneToggle note={formattedKey} semitone={startingSemitone} />
 			</aside>
 			<ScalesContext.Provider value={context}>
 				{scales}
