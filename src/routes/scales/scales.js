@@ -11,6 +11,7 @@ import style from './scalesStyle';
 import Toggle from '../../components/toggle/toggle';
 import ResetButton from '../../components/resetButton/resetButton';
 import DroneToggle from '../../components/toggle/droneToggle';
+import getChordComponent from '../../components/chord/getChordComponent';
 
 const BACKGROUND_TAG_NAMES = ['MAIN', 'DIV', 'ARTICLE', 'SECTION', 'ASIDE'];
 for(let i = 1; i <= 6; i++) {
@@ -59,9 +60,8 @@ function Scales({matches: { keyCenter }}) {
 		startingScaleTone: getScaleTone(keyCenter),
 		startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
 		chordTones: seventhEnabled ? [0, 2, 4, 6] : [0, 2, 4],
+		ChordComponent: getChordComponent(secondaryDominantsEnabled, tritoneSubstitutionsEnabled),
 		awaitingRoot,
-		secondaryDominantsEnabled,
-		tritoneSubstitutionsEnabled,
 		root,
 	};
 
