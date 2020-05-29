@@ -91,7 +91,12 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
 			<aside class={style.chordControls}>
-				<DroneToggle note={formattedKey} semitone={startingSemitone} />
+				<ResetButton resetChordType={() => {
+					setSeventhEnabled(false);
+					setAwaitingRoot(false);
+					setSecondaryDominantsEnabled(false);
+					setRoot(0);
+				}} />
 				<Toggle name="Secondary dominants" keyboardShortcut="s"
 					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
 					<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
@@ -106,12 +111,7 @@ function Scales({matches: { keyCenter }}) {
 				</Toggle>
 				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
 					root={root} setRoot={setRoot} />
-				<ResetButton resetChordType={() => {
-					setSeventhEnabled(false);
-					setAwaitingRoot(false);
-					setSecondaryDominantsEnabled(false);
-					setRoot(0);
-				}} />
+				<DroneToggle note={formattedKey} semitone={startingSemitone} />
 			</aside>
 			<ScalesContext.Provider value={context}>
 				{scales}

@@ -3,13 +3,15 @@
 	position: sticky;
 	top: 0;
 	background-color: #FAFAFA;
-	padding: 0.8rem calc(50% - 11rem);
+	padding: 0.8rem calc(50% - 15rem);
 	z-index: 1;
 	display: flex;
 	justify-content: space-between;
+	max-width: 100%;
+	overflow-x: auto;
 }
 
-@media only screen and (min-width: 650px) {
+@media only screen and (min-width: 810px) {
 	.chordControls {
 		display: block;
 		padding: 0.8rem 0;

@@ -1,16 +1,11 @@
 .container {
     border: none;
     display: inline-block;
-    margin: 0 0.1rem;
+    margin: 0 0.4%;
     padding: 0;
+    min-width: 7rem;
 }
 
 .select {
     margin-left: 0.2rem;
-}
-
-@media only screen and (min-width: 650px) {
-    .container {
-        margin-left: 0;
-    }
 }
