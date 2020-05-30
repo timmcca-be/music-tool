@@ -1,27 +1,24 @@
 .chordControls {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	background-color: #FAFAFA;
-	padding: 0.8rem calc(50% - 15rem);
-	z-index: 1;
+	margin-left: 1rem;
+	width: 17rem;
+}
+
+.container {
 	display: flex;
-	justify-content: space-between;
-	max-width: 100%;
-	overflow-x: auto;
+    flex-direction: row-reverse;
+    justify-content: center;
 }
 
-@media only screen and (min-width: 810px) {
-	.chordControls {
-		display: block;
-		padding: 0.8rem 0;
+.scales {
+	width: calc(100% - 18rem);
+	max-width: 52.4rem;
+}
+
+@media only screen and (min-width: 1350px) {
+	.scales {
+		width: auto;
+		max-width: unset;
 	}
-}
-
-.selectInputGroup {
-	border: none;
-	display: inline-block;
-	padding: 0;
 }
 
 .romanNumeral {

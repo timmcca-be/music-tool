@@ -90,33 +90,37 @@ function Scales({matches: { keyCenter }}) {
 					{ name: 'Diatonic scales', value: true},
 					{ name: 'Non-diatonic scales', value: false },
 				]} />
-			<aside class={style.chordControls}>
-				<ResetButton resetChordType={() => {
-					setSeventhEnabled(false);
-					setAwaitingRoot(false);
-					setSecondaryDominantsEnabled(false);
-					setTritoneSubstitutionsEnabled(false);
-					setRoot(0);
-				}} />
-				<Toggle name="Secondary dominants" keyboardShortcut="s"
-					enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
-					<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
-				</Toggle>
-				<Toggle name="Tritone subtitutions" keyboardShortcut="t"
-					enabled={tritoneSubstitutionsEnabled} setEnabled={setTritoneSubstitutionsEnabled}>
-					<span class="desktop">tritone substitutions</span><span class={`mobile ${style.romanNumeral}`}>♭V/x</span>
-				</Toggle>
-				<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
-					enabled={seventhEnabled} setEnabled={setSeventhEnabled}>
-					7th
-				</Toggle>
-				<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
-					root={root} setRoot={setRoot} />
-				<DroneToggle note={formattedKey} semitone={startingSemitone} />
-			</aside>
-			<ScalesContext.Provider value={context}>
-				{scales}
-			</ScalesContext.Provider>
+			<article class={style.container}>
+				<aside class={style.chordControls}>
+					<ResetButton resetChordType={() => {
+						setSeventhEnabled(false);
+						setAwaitingRoot(false);
+						setSecondaryDominantsEnabled(false);
+						setTritoneSubstitutionsEnabled(false);
+						setRoot(0);
+					}} />
+					<Toggle name="Secondary dominants" keyboardShortcut="s"
+						enabled={secondaryDominantsEnabled} setEnabled={setSecondaryDominantsEnabled}>
+						<span class="desktop">secondary dominants</span><span class={`mobile ${style.romanNumeral}`}>V/x</span>
+					</Toggle>
+					<Toggle name="Tritone subtitutions" keyboardShortcut="t"
+						enabled={tritoneSubstitutionsEnabled} setEnabled={setTritoneSubstitutionsEnabled}>
+						<span class="desktop">tritone substitutions</span><span class={`mobile ${style.romanNumeral}`}>♭V/x</span>
+					</Toggle>
+					<Toggle name="7th" keyboardShortcut="7" allowKeyboardShortcut={!awaitingRoot}
+						enabled={seventhEnabled} setEnabled={setSeventhEnabled}>
+						7th
+					</Toggle>
+					<RootSelect awaitingRoot={awaitingRoot} setAwaitingRoot={setAwaitingRoot}
+						root={root} setRoot={setRoot} />
+					<DroneToggle note={formattedKey} semitone={startingSemitone} />
+				</aside>
+				<section class={style.scales}>
+					<ScalesContext.Provider value={context}>
+						{scales}
+					</ScalesContext.Provider>
+				</section>
+			</article>
 		</main>
 	);
 }

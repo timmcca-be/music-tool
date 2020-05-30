@@ -1,33 +1,31 @@
 .scale {
-	padding: 1.6rem 0.2rem 0 0.2rem;
+	padding: 1.1rem 0.2rem 0 0.2rem;
 }
 
 .chords {
 	display: inline-flex;
-	width: 100%;
 	flex-wrap: wrap;
 	justify-content: center;
-	max-width: 52rem;
+	width: 100%;
 	vertical-align: middle;
 }
 
 .modeTitle {
-	margin: 0 0 0.5rem 0;
+	display: inline-block;
+	width: 12rem;
+	margin: 0.5rem 0;
 	vertical-align: middle;
 }
 
-@media only screen and (min-width: 1200px) {
-	/* for spacing, so that the grid is centered */
-	.scale:after {
-		content: '';
+@media only screen and (min-width: 1350px) {
+	.chords {
+		width: 52rem;
 	}
+}
 
-	.modeTitle, .scale:after {
-		display: inline-block;
-		width: 10rem;
-	}
-
+@media only screen and (min-width: 1450px) {
 	.modeTitle {
-		margin: 0;
+		width: 15rem;
+		margin-left: 3rem;
 	}
 }
