@@ -14,7 +14,7 @@
 	margin: 0 0.1rem;
 }
 
-@media only screen and (min-width: 810px) {
+@media only screen and (min-width: 1100px) {
 	.toggle {
 		width: 9rem;
 		margin: 0 0.4%;
