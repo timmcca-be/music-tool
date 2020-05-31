@@ -31,4 +31,21 @@ function getSemitone(note) {
     return semitone;
 }
 
-export { getScaleSemitoneOffsets, getNote, getScaleTone, getSemitone };
+const roundTowardZero = num => num | 0;
+
+function getSemitonesFromRootFunction(scaleSemitones, startingScaleTone) {
+
+    return scaleToneOffset => {
+        const endScaleTone = startingScaleTone + scaleToneOffset;
+        const octaveDistance = roundTowardZero((endScaleTone - startingScaleTone) / 7);
+        if(endScaleTone >= 7) {
+            const semitoneDistance = scaleSemitones[endScaleTone - 7] - scaleSemitones[startingScaleTone];
+            return 12 * (octaveDistance + 1) + semitoneDistance;
+        }
+        const semitoneDistance = scaleSemitones[endScaleTone] - scaleSemitones[startingScaleTone];
+
+        return 12 * octaveDistance + semitoneDistance;
+    }
+}
+
+export { getScaleSemitoneOffsets, getNote, getScaleTone, getSemitone, getSemitonesFromRootFunction };
