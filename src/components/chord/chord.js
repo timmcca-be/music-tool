@@ -2,24 +2,12 @@ import { h } from 'preact';
 import { useContext } from 'preact/hooks';
 import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
-import { getSemitone, getNote } from '../../utils/musicUtils';
+import { getSemitone, getNote, getSemitonesFromRootFunction } from '../../utils/musicUtils';
 import ScalesContext from '../../context/scalesContext';
 import style from './chordStyle';
 
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const MINOR_CHORD_TYPES = ['half-diminished', 'diminished', 'minor'];
-
-const roundTowardZero = num => num | 0;
-
-function semitonesBetweenScaleTones(start, end, semitones) {
-    const octaveDistance = roundTowardZero((end - start) / 7);
-    if(end >= 7) {
-        const semitoneDistance = semitones[end - 7] - semitones[start];
-        return 12 * (octaveDistance + 1) + semitoneDistance;
-    }
-    const semitoneDistance = semitones[end] - semitones[start];
-    return 12 * octaveDistance + semitoneDistance;
-}
 
 function getAccidentals(semitoneDifference) {
     if(semitoneDifference > 6) {
@@ -70,10 +58,7 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0, relativeTonicSemi
 
     const baseSemitone = scaleSemitones[scaleTone];
 
-    const semitonesFromRoot = scaleToneOffset => (
-        semitonesBetweenScaleTones(scaleTone, scaleTone + scaleToneOffset, scaleSemitones)
-    );
-
+    const semitonesFromRoot = getSemitonesFromRootFunction(scaleSemitones, scaleTone);
     const chordStyle = getChordStyle(semitonesFromRoot(2), semitonesFromRoot(4), semitonesFromRoot(6));
 
     const accidentalsFromIonian = getAccidentalsFromIonian(scaleTone, baseSemitone, scaleSemitones[0]);
