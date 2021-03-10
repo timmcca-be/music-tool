@@ -1,22 +1,7 @@
-# music-tool
+# Music Tool
 
-## CLI Commands
+Try it out here: [music-tool.timmcca.be](https://music-tool.timmcca.be/#/)
 
-``` bash
-# install dependencies
-npm install
+This is a tool for finding chords that fit into any given key and mode. Select a key on the first page, then start tapping buttons to hear the chords.
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# test the production build locally
-npm run serve
-
-# run tests with jest and preact-render-spy 
-npm run test
-```
-
-For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
+Developed with lots of [feedback](https://www.reddit.com/r/musictheory/comments/go5ewt/tool_for_finding_chords_in_a_given_keymode/) from users on Reddit.
