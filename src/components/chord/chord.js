@@ -98,7 +98,9 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0, relativeTonicSemi
     } else {
         // This is for if an alternate root is selected, for chords like D/A
         const adjustedRoot = (scaleTone + root) % 7;
-        inversion = `/${getFullNoteName(startingScaleTone + relativeTonic + adjustedRoot, scaleSemitones[adjustedRoot])}`;
+        inversion = `/${
+            getFullNoteName(startingScaleTone + relativeTonic + adjustedRoot, scaleSemitones[adjustedRoot])
+        }`;
         chordSemitones.push(scaleSemitones[adjustedRoot] - (adjustedRoot > scaleTone ? 12 : 0));
     }
 
