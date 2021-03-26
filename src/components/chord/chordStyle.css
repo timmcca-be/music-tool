@@ -6,43 +6,11 @@
 }
 
 .chordButton {
-	width: calc(50% - 6px);
+	width: calc(100% / 7 - 6px);
 	padding-top: 0.2rem;
 	margin: 3px;
 	font-weight: bold;
 	font-size: 1rem;
-}
-
-@media only screen and (min-width: 340px) {
-	.chordButton {
-		width: calc(100% / 3 - 6px);
-	}
-
-	.chordButton:nth-of-type(1) {
-		margin-left: 4px;
-	}
-	.chordButton:nth-of-type(2) {
-		margin-right: 4px;
-	}
-}
-
-@media only screen and (min-width: 460px) {
-	.chordButton {
-		width: calc(25% - 6px);
-	}
-
-	.chordButton:nth-of-type(1) {
-		margin-left: 3px;
-	}
-	.chordButton:nth-of-type(2) {
-		margin-right: 3px;
-	}
-}
-
-@media only screen and (min-width: 810px) {
-	.chordButton {
-		width: calc(100% / 7 - 6px);
-	}
 }
 
 .major {

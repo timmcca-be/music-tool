@@ -3,19 +3,12 @@
 	position: sticky;
 	top: 0;
 	background-color: #FAFAFA;
-	padding: 0.8rem calc(50% - 15rem);
+	padding: 0.8rem 0;
 	z-index: 1;
-	display: flex;
+	display: block;
 	justify-content: space-between;
 	max-width: 100%;
 	overflow-x: auto;
-}
-
-@media only screen and (min-width: 810px) {
-	.chordControls {
-		display: block;
-		padding: 0.8rem 0;
-	}
 }
 
 .selectInputGroup {
