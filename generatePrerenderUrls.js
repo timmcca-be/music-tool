@@ -8,7 +8,7 @@ const urls = [{
 const notes = ['C', 'G', 'D', 'A', 'E', 'B', 'Fs', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
 for(const note of notes) {
     urls.push({
-        url: `/scales/${note}`,
+        url: `/scales/${note.toLowerCase()}`,
         title: `${note.replace('s', '♯').replace('b', '♭')} Scales`
     })
 }

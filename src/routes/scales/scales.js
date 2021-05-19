@@ -48,16 +48,17 @@ function Scales({matches: { keyCenter }}) {
 	const [secondaryDominantsEnabled, setSecondaryDominantsEnabled] = useState(false);
 	const [tritoneSubstitutionsEnabled, setTritoneSubstitutionsEnabled] = useState(false);
 	const [root, setRoot] = useState(0);
+	const capitalizedKeyCenter = `${keyCenter[0].toUpperCase()}${keyCenter.substring(1)}`;
 
-	const formattedKey = formatNote(keyCenter);
+	const formattedKey = formatNote(capitalizedKeyCenter);
 	const title = `${formattedKey} Scales`;
     if(typeof window !== 'undefined') {
         document.title = title;
 	}
 
-	const startingSemitone = getSemitone(keyCenter);
+	const startingSemitone = getSemitone(capitalizedKeyCenter);
 	const context = {
-		startingScaleTone: getScaleTone(keyCenter),
+		startingScaleTone: getScaleTone(capitalizedKeyCenter),
 		startingSemitone: startingSemitone <= 2 ? startingSemitone : startingSemitone - 12,
 		chordTones: seventhEnabled ? [0, 2, 4, 6] : [0, 2, 4],
 		ChordComponent: getChordComponent(secondaryDominantsEnabled, tritoneSubstitutionsEnabled),
