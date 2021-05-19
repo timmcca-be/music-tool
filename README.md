@@ -1,6 +1,8 @@
 # Music Tool
 
-Try it out here: [music-tool.timmcca.be](https://music-tool.timmcca.be/#/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fbc7d84e-ce14-45d3-8cc0-6f38c50d4005/deploy-status)](https://app.netlify.com/sites/nervous-brattain-dc478e/deploys)
+
+Try it out here: [music-tool.timmcca.be](https://music-tool.timmcca.be/)
 
 This is a tool for finding chords that fit into any given key and mode. Select a key on the first page, then start tapping buttons to hear the chords.
 
