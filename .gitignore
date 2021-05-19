@@ -3,3 +3,4 @@ node_modules
 /*.log
 *.lock
 size-plugin.json
+prerender-urls.json
