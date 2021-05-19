@@ -14,7 +14,7 @@ const Main = () => {
 			<h1>Tonal Centers</h1>
 			<p>Select a tonal center to view its chord scales</p>
 			<nav class={style.keys}>
-				{ notes.map(note => <Link class={style.link} href={`/scales/${note.toLowerCase()}`}>{note.replace('s', '♯').replace('b', '♭')}</Link>) }
+				{ notes.map(note => <Link class={style.link} href={`/scales/${note.toLowerCase()}/`}>{note.replace('s', '♯').replace('b', '♭')}</Link>) }
 			</nav>
 		</main>
 	);

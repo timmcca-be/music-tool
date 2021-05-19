@@ -8,7 +8,7 @@ function App() {
 	return (
 		<Router>
 			<Main path="/" />
-			<Scales path="/scales/:keyCenter" />
+			<Scales path="/scales/:keyCenter/" />
 		</Router>
 	);
 }
