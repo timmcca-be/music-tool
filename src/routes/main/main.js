@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import style from './mainStyle';
 import { Link } from 'preact-router/match';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 const notes = ['C', 'G', 'D', 'A', 'E', 'B', 'Fs', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
 
@@ -21,6 +21,8 @@ const Main = () => {
 		setIsShowingModal(false);
 		document.body.style.overflow = 'auto';
 	}
+
+	useEffect(() => () => document.body.style.overflow = 'auto', []);
 
 	return (
 		<main>
