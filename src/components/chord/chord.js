@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useContext } from 'preact/hooks';
+import { useContext, useState } from 'preact/hooks';
 import { playChord } from '../../utils/playChord';
 import { getChordType, getChordStyle } from '../../utils/getChordType';
 import { getSemitone, getNote, getSemitonesFromRootFunction } from '../../utils/musicUtils';
@@ -59,6 +59,8 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0, relativeTonicSemi
         root,
     } = useContext(ScalesContext);
 
+    const [stopPlayingChord, setStopPlayingChord] = useState(null);
+
     const baseSemitone = scaleSemitones[scaleTone];
 
     // semitonesFromRoot is a function that computes the number of semitones that a given chord tone is from
@@ -104,9 +106,28 @@ function Chord({ scaleSemitones, scaleTone, relativeTonic = 0, relativeTonicSemi
         chordSemitones.push(scaleSemitones[adjustedRoot] - (adjustedRoot > scaleTone ? 12 : 0));
     }
 
+    const onPress = () => setStopPlayingChord(() => playChord(chordSemitones));
+    const onRelease = () => {
+        if (stopPlayingChord != null) {
+            stopPlayingChord();
+            setStopPlayingChord(null);
+        }
+    };
+
+    const isTouchDevice = typeof window !== 'undefined' && "ontouchstart" in window;
+
     return (
         <button class={`${style.chordButton} ${style[chordStyle]}`}
-            onClick={() => playChord(chordSemitones)}>
+            {...(isTouchDevice ? {
+                onTouchStart: onPress,
+                onTouchCancel: onRelease,
+                onTouchEnd: onRelease,
+            } : {
+                onMouseDown: onPress,
+                onMouseLeave: onRelease,
+                onMouseUp: onRelease,
+            })}
+        >
             {note}{type.literal}{awaitingRoot ? '/' : inversion}
             <small>{romanNumeral}<sup>{type.roman}</sup>{relativeTonicRomanNumeral}</small>
         </button>
